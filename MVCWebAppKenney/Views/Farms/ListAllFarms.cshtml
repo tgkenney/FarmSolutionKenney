@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Farm>
+
+    @{
+        ViewData["Title"] = "List All Farms";
+    }
+
+    <h3>List All Farms</h3>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Farm Name</th>
+                <th>Farm Address</th>
+                <th>Farm Size</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (Farm eachFarm in Model)
+            {
+                <tr>
+                    <td>@eachFarm.FarmName</td>
+                    <td>@eachFarm.FarmAddress</td>
+                    <td>@eachFarm.FarmSize</td>
+                </tr>
+            }
+        </tbody>
+    </table>

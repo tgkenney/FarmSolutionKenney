@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Classification>
+
+@{
+    ViewData["Title"] = "List All Classifications";
+}
+
+<h3>List All Classifications</h3>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Classification ID</th>
+            <th>Classification Name</th>
+            <th>CropName</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (Classification eachClassification in Model)
+        {
+            <tr>
+                <td>@eachClassification.ClassificationID</td>
+                <td>@eachClassification.ClassificationName</td>
+                <td>@eachClassification.Crops</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

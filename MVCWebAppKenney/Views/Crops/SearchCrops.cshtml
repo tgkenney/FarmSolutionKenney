@@ -1,0 +1,21 @@
+﻿@model MVCWebAppKenney.ViewModels.SearchCropsViewModel
+
+@{
+    ViewData["Title"] = "SearchCrops";
+}
+
+<h1>Search Crops</h1>
+
+<form asp-action="SearchCrops" method="post">
+    
+    <div class="form-group">
+        <label>Choose a Classification</label>
+        <select asp-for="ClassificationID" class="form-control">
+            <option value="0">None</option>
+            <option value="1">Fruit</option>
+            <option value="2">Vegetable</option>
+            <option value="3">Herb</option>
+        </select>
+    </div>
+
+</form>

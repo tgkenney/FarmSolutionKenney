@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Crop>
+
+@{
+    ViewData["Title"] = "List All Crops with Farms";
+}
+
+<h3>List All Crops with Farms</h3>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Crop Name</th>
+            <th>Farm Name</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (Crop eachCrop in Model)
+        {
+            <tr>
+                <td>@eachCrop.CropName</td>
+
+                @foreach (CanProduce eachProduce in eachCrop.FarmsThatCanProduce)
+                {
+                <tr>
+                    <td></td>
+                    <td>@eachProduce.Farm.FarmName</td>
+                </tr>
+            }
+                </tr>
+            }
+    </tbody>
+</table>
+
