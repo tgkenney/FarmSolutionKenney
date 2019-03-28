@@ -10,13 +10,14 @@ namespace MVCWebAppKenney.ViewModels
     public class SearchForecastsViewModel
     {
         // User inputs for search
-        public int ClassificationID { get; set; }
-        public int CropID { get; set; }
+        // For optional input, make properties nullable
+        public int? ClassificationID { get; set; }
+        public int? CropID { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime StartSearchDate { get; set; }
+        public DateTime? StartSearchDate { get; set; }
         [DataType(DataType.Date)]
-        public DateTime EndSearchDate { get; set; }
+        public DateTime? EndSearchDate { get; set; }
 
         // Search result
         public List<Forecast> ForecastList { get; set; }

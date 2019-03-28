@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MVCWebAppKenney.Data;
 using MVCWebAppKenney.Models;
@@ -25,6 +26,8 @@ namespace MVCWebAppKenney.Controllers
         [HttpGet]
         public IActionResult SearchDemandForecasts()
         {
+            ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
+
             return View();
         }
         [HttpPost]
