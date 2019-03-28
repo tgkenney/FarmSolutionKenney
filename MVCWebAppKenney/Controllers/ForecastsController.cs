@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MVCWebAppKenney.Data;
 using MVCWebAppKenney.Models;
+using MVCWebAppKenney.ViewModels;
 
 namespace MVCWebAppKenney.Controllers
 {
@@ -24,12 +26,22 @@ namespace MVCWebAppKenney.Controllers
         [HttpGet]
         public IActionResult SearchDemandForecasts()
         {
-            return View();
+            ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
+
+            SearchForecastsViewModel model = new SearchForecastsViewModel();
+
+            return View(model);
         }
         [HttpPost]
-        public IActionResult SearchDemandForecasts(int ForecastID)
+        public IActionResult SearchDemandForecasts(SearchForecastsViewModel model)
         {
-            return View();
+            ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
+
+            List<Forecast> forecastList = database.Forecasts.ToList<Forecast>();
+
+            model.ForecastList = forecastList;
+
+            return View(model);
         }
 
         public IActionResult ListAllForecasts()

@@ -1,0 +1,64 @@
+﻿@model MVCWebAppKenney.ViewModels.SearchForecastsViewModel
+
+@{
+    ViewData["Title"] = "Search Forecasts";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="SearchDemandForecasts" method="post">
+
+    <div class="form-group">
+        <label>Choose a Classification</label>
+        <select asp-for="ClassificationID" class="form-control">
+            <option value=null>None</option>
+            <option value="1">Fruit</option>
+            <option value="2">Vegetable</option>
+            <option value="3">Herb</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Choose a Crop</label>
+        <select asp-for="CropID" class="form-control" asp-items="ViewBag.CropList">
+            <option value=null>None</option>
+
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Choose a Start Date</label>
+        <input asp-for="StartSearchDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Choose an End Date</label>
+        <input asp-for="EndSearchDate" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-default">Search</button>
+
+</form>
+
+@if (Model.ForecastList != null)
+{
+    <label>This is the search result</label>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Demand Forecast</th>
+                <th>Actual Sales</th>
+            </tr>
+        </thead>
+        <tbody>     
+            @foreach (Forecast eachForecast in Model.ForecastList)
+            {
+                <tr>
+                    <td>@eachForecast.StartDate.ToString("MM/dd/yyyy")</td>
+                    <td>@eachForecast.EndDate.ToString("MM/dd/yyyy")</td>
+                    <td>@eachForecast.ForecastAmount</td>
+                    <td>@eachForecast.ActualSales</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
