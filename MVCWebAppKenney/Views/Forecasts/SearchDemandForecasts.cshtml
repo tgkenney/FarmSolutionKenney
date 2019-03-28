@@ -1,13 +1,13 @@
 ﻿@model MVCWebAppKenney.ViewModels.SearchForecastsViewModel
 
 @{
-    ViewData["Title"] = "SearchCrops";
+    ViewData["Title"] = "Search Forecasts";
 }
 
-<h1>Search Crops</h1>
+<h1>Search Forecasts</h1>
 
-<form asp-action="SearchCrops" method="post">
-    
+<form asp-action="SearchDemandForecasts" method="post">
+
     <div class="form-group">
         <label>Choose a Classification</label>
         <select asp-for="ClassificationID" class="form-control">

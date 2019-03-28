@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVCWebAppKenney.Data;
 using MVCWebAppKenney.Models;
+using MVCWebAppKenney.ViewModels;
 
 namespace MVCWebAppKenney.Controllers
 {
@@ -27,7 +28,7 @@ namespace MVCWebAppKenney.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult SearchDemandForecasts(int ForecastID)
+        public IActionResult SearchDemandForecasts(SearchForecastsViewModel model)
         {
             return View();
         }
