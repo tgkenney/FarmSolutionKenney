@@ -28,12 +28,18 @@ namespace MVCWebAppKenney.Controllers
         {
             ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
 
-            return View();
+            SearchForecastsViewModel model = new SearchForecastsViewModel();
+
+            return View(model);
         }
         [HttpPost]
         public IActionResult SearchDemandForecasts(SearchForecastsViewModel model)
         {
-            return View();
+            List<Forecast> forecastList = database.Forecasts.ToList<Forecast>();
+
+            model.ForecastList = forecastList;
+
+            return View(model);
         }
 
         public IActionResult ListAllForecasts()
