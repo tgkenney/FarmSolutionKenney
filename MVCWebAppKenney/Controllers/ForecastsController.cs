@@ -35,6 +35,8 @@ namespace MVCWebAppKenney.Controllers
         [HttpPost]
         public IActionResult SearchDemandForecasts(SearchForecastsViewModel model)
         {
+            ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
+
             List<Forecast> forecastList = database.Forecasts.ToList<Forecast>();
 
             model.ForecastList = forecastList;
