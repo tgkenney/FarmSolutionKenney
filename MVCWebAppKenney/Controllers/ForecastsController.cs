@@ -14,9 +14,22 @@ namespace MVCWebAppKenney.Controllers
     {
         private ApplicationDbContext database;
 
+        // Constructor
+        // Dependency Injection
         public ForecastsController(ApplicationDbContext dbContext)
         {
             database = dbContext;
+        }
+
+        [HttpGet]
+        public IActionResult SearchDemandForecasts()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult SearchDemandForecasts(int ForecastID)
+        {
+            return View();
         }
 
         public IActionResult ListAllForecasts()
