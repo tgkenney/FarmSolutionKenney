@@ -56,8 +56,8 @@
                 <tr>
                     <td>@eachForecast.Crop.CropName</td>
                     <td>@eachForecast.Crop.Classification.ClassificationName</td>
-                    <td>@eachForecast.StartDate.ToString("MM/dd/yyyy")</td>
-                    <td>@eachForecast.EndDate.ToString("MM/dd/yyyy")</td>
+                    <td>@eachForecast.StartDate.ToShortDateString()</td>
+                    <td>@eachForecast.EndDate.ToShortDateString()</td>
                     <td>@eachForecast.ForecastAmount</td>
                     <td>@eachForecast.ActualSales</td>
                 </tr>

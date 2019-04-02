@@ -37,10 +37,21 @@ namespace MVCWebAppKenney.Controllers
         {
             ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
 
-            List<Forecast> forecastList = database.Forecasts.Include(f => f.Crop).ThenInclude(c => c.Classification).ToList<Forecast>();
+            List<Forecast> forecastList = database.Forecasts.Include(f => f.Crop).ThenInclude(c => c.Classification).ToList<Forecast>(); //.Include(d => d.Crop.Classification)
+
+            if (model.ClassificationID != null)
+            { 
+                forecastList = forecastList.Where(f => f.Crop.ClassificationID == model.ClassificationID).ToList<Forecast>();
+            }
+            
+
+            //Do it for Crop as well
+            if (model.CropID != null)
+            {
+                forecastList = forecastList.Where(f => f.Crop.CropID == model.CropID).ToList<Forecast>();
+            }
 
             model.ForecastList = forecastList;
-
             return View(model);
         }
 
