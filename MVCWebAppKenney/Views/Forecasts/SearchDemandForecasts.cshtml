@@ -43,6 +43,8 @@
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
+                <th>Crop Name</th>
+                <th>Classification Name</th>
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Demand Forecast</th>
@@ -53,6 +55,8 @@
             @foreach (Forecast eachForecast in Model.ForecastList)
             {
                 <tr>
+                    <td></td>
+                    <td></td>
                     <td>@eachForecast.StartDate.ToString("MM/dd/yyyy")</td>
                     <td>@eachForecast.EndDate.ToString("MM/dd/yyyy")</td>
                     <td>@eachForecast.ForecastAmount</td>
