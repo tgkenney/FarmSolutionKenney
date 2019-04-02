@@ -37,7 +37,7 @@ namespace MVCWebAppKenney.Controllers
         {
             ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
 
-            List<Forecast> forecastList = database.Forecasts.ToList<Forecast>();
+            List<Forecast> forecastList = database.Forecasts.Include(f => f.Crop).ThenInclude(c => c.Classification).ToList<Forecast>();
 
             model.ForecastList = forecastList;
 

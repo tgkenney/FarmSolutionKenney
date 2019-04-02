@@ -21,7 +21,6 @@
         <label>Choose a Crop</label>
         <select asp-for="CropID" class="form-control" asp-items="ViewBag.CropList">
             <option value=null>None</option>
-
         </select>
     </div>
     <div class="form-group">
@@ -55,8 +54,8 @@
             @foreach (Forecast eachForecast in Model.ForecastList)
             {
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td>@eachForecast.Crop.CropName</td>
+                    <td>@eachForecast.Crop.Classification.ClassificationName</td>
                     <td>@eachForecast.StartDate.ToString("MM/dd/yyyy")</td>
                     <td>@eachForecast.EndDate.ToString("MM/dd/yyyy")</td>
                     <td>@eachForecast.ForecastAmount</td>
