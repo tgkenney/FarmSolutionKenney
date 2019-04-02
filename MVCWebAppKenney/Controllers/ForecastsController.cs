@@ -52,6 +52,7 @@ namespace MVCWebAppKenney.Controllers
             }
 
             model.ForecastList = forecastList;
+
             return View(model);
         }
 
