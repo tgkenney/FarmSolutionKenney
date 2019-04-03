@@ -1,4 +1,4 @@
-[![Build Status](https://drone.tgkenney.dev/api/badges/tgkenney/FarmSolutionKenney/status.svg)](https://drone.tgkenney.dev/tgkenney/FarmSolutionKenney)
+### Build Status: [![Build Status](https://drone.tgkenney.dev/api/badges/tgkenney/FarmSolutionKenney/status.svg)](https://drone.tgkenney.dev/tgkenney/FarmSolutionKenney)
 # Farm Solution Kenney
 
 MIST 450 Class Project for Grow Ohio Valley
