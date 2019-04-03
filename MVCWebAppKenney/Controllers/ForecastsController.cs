@@ -51,6 +51,7 @@ namespace MVCWebAppKenney.Controllers
                 forecastList = forecastList.Where(f => f.Crop.CropID == model.CropID).ToList<Forecast>();
             }
 
+
             model.ForecastList = forecastList;
 
             return View(model);
