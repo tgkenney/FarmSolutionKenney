@@ -6,10 +6,12 @@ steps:
   commands:
   - dotnet restore
   - dotnet build
+
 - name: slack
   image: plugins/slack
   settings:
     webhook:
       from_secret: slack_webhook
     channel: dev
+
 branches: master
