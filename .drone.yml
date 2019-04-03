@@ -14,12 +14,11 @@ steps:
       from_secret: slack_webhook
     channel: dev
     username: Drone
-    icon_url: https://drone.io/images/logo-d3343d0a14.svg
     template: >
       {{#success build.status}}
-        Build {{build.number}} succeeded, please see {{build.link}}
+        Build #{{build.number}} succeeded, please see {{build.link}}
       {{else}}
-        Build {{build.number}} failed, please see {{build.link}}
+        Build #{{build.number}} failed, please see {{build.link}}
       {{/success}}
 
 
