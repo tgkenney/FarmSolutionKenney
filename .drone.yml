@@ -1,0 +1,25 @@
+kind: pipeline
+name: default
+steps:
+- name: build
+  image: microsoft/dotnet:2.2-sdk
+  commands:
+  - dotnet restore
+  - dotnet build
+
+- name: slack
+  image: plugins/slack
+  settings:
+    webhook:
+      from_secret: slack_webhook
+    channel: dev
+    username: Drone
+    template: >
+      {{#success build.status}}
+        Build #{{build.number}} succeeded, please see {{build.link}}
+      {{else}}
+        Build #{{build.number}} failed, please see {{build.link}}
+      {{/success}}
+
+
+branches: master
