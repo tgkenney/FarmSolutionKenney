@@ -35,9 +35,12 @@
     <button type="submit" class="btn btn-default">Search</button>
 
 </form>
+@*Display no search results, and NO table should show up*@
 
 @if (Model.ForecastList != null)
 {
+    @if(Model.ForecastList.Any())
+    { 
     <label>This is the search result</label>
     <table class="table table-bordered table-striped">
         <thead>
@@ -50,7 +53,7 @@
                 <th>Actual Sales</th>
             </tr>
         </thead>
-        <tbody>     
+        <tbody>
             @foreach (Forecast eachForecast in Model.ForecastList)
             {
                 <tr>
@@ -64,4 +67,10 @@
             }
         </tbody>
     </table>
+    }
+    else
+    {
+        <label>There are no search results</label>
+    }
 }
+
