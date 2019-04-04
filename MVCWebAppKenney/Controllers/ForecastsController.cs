@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -47,10 +48,24 @@ namespace MVCWebAppKenney.Controllers
             }
             
 
-            //Do it for Crop as well
+            // Do it for Crop as well
             if (model.CropID != null)
             {
                 forecastList = forecastList.Where(f => f.Crop.CropID == model.CropID);
+            }
+
+            // Start and End date
+            if (model.StartSearchDate != null && model.EndSearchDate != null)
+            {
+                forecastList = forecastList.Where(f => f.StartDate >= model.StartSearchDate.Value.Date && f.EndDate <= model.EndSearchDate.Value.Date);
+            }
+            if(model.StartSearchDate != null && model.EndSearchDate == null)
+            {
+                forecastList = forecastList.Where(f => f.StartDate >= model.StartSearchDate.Value.Date);
+            }
+            if(model.StartSearchDate == null && model.EndSearchDate != null)
+            {
+                forecastList = forecastList.Where(f => f.EndDate <= model.EndSearchDate.Value.Date);
             }
 
             model.ForecastList = forecastList.ToList<Forecast>();
