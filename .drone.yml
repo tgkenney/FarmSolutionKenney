@@ -49,5 +49,4 @@ steps:
     event:
     - pull_request
 
-branch:
-  - master
+branches: [ master ]
