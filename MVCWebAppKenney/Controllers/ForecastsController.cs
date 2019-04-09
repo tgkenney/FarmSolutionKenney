@@ -54,16 +54,16 @@ namespace MVCWebAppKenney.Controllers
                 forecastList = forecastList.Where(f => f.Crop.CropID == model.CropID);
             }
 
-            // Start and End date
+            // Start and End date searching
             if (model.StartSearchDate != null && model.EndSearchDate != null)
             {
                 forecastList = forecastList.Where(f => f.StartDate >= model.StartSearchDate.Value.Date && f.EndDate <= model.EndSearchDate.Value.Date);
             }
-            if(model.StartSearchDate != null && model.EndSearchDate == null)
+            if (model.StartSearchDate != null && model.EndSearchDate == null)
             {
                 forecastList = forecastList.Where(f => f.StartDate >= model.StartSearchDate.Value.Date);
             }
-            if(model.StartSearchDate == null && model.EndSearchDate != null)
+            if (model.StartSearchDate == null && model.EndSearchDate != null)
             {
                 forecastList = forecastList.Where(f => f.EndDate <= model.EndSearchDate.Value.Date);
             }
