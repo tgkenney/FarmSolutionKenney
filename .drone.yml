@@ -1,11 +1,17 @@
 kind: pipeline
 name: default
+
 steps:
 - name: build
   image: microsoft/dotnet:2.2-sdk
   commands:
   - dotnet restore
   - dotnet build
+  when:
+    branch: 
+    - master
+    - feature/*
+    event: pull_request
 
 - name: slack
   image: plugins/slack
@@ -21,5 +27,20 @@ steps:
         Build #{{build.number}} failed, please see {{build.link}}
       {{/success}}
 
+- name: publish
+  image: microsoft/dotnet:2.2-sdk
+  settings:
+    repo: tgkenney/farmsolution
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    tags: latest
+  script:
+  -  dotnet publish -c Release
+  when:
+    branch:
+    - master
+    event:
+    - pull_request
 
-branches: master
