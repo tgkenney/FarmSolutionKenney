@@ -491,6 +491,36 @@ namespace MVCWebAppKenney.Data
                 };
                 database.Forecasts.Add(forecast);
 
+                forecast = new Forecast
+                {
+                    StartDate = new DateTime(2019, 2, 17),
+                    EndDate = new DateTime(2019, 2, 23),
+                    ForecastAmount = 4,
+                    ActualSales = 5,
+                    CropID = 13
+                };
+                database.Forecasts.Add(forecast);
+
+                forecast = new Forecast
+                {
+                    StartDate = new DateTime(2019, 2, 24),
+                    EndDate = new DateTime(2019, 3, 2),
+                    ForecastAmount = 4,
+                    ActualSales = 3,
+                    CropID = 13
+                };
+                database.Forecasts.Add(forecast);
+
+                forecast = new Forecast
+                {
+                    StartDate = new DateTime(2019, 3, 3),
+                    EndDate = new DateTime(2019, 3, 9),
+                    ForecastAmount = 4,
+                    ActualSales = null,
+                    CropID = 13
+                };
+                database.Forecasts.Add(forecast);
+
                 database.SaveChanges();
             }
         }

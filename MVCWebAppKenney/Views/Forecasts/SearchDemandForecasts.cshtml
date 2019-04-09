@@ -21,7 +21,6 @@
         <label>Choose a Crop</label>
         <select asp-for="CropID" class="form-control" asp-items="ViewBag.CropList">
             <option value=null>None</option>
-
         </select>
     </div>
     <div class="form-group">
@@ -36,29 +35,42 @@
     <button type="submit" class="btn btn-default">Search</button>
 
 </form>
+@*Display no search results, and NO table should show up*@
 
 @if (Model.ForecastList != null)
 {
+    @if(Model.ForecastList.Any())
+    { 
     <label>This is the search result</label>
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
+                <th>Crop Name</th>
+                <th>Classification Name</th>
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Demand Forecast</th>
                 <th>Actual Sales</th>
             </tr>
         </thead>
-        <tbody>     
+        <tbody>
             @foreach (Forecast eachForecast in Model.ForecastList)
             {
                 <tr>
-                    <td>@eachForecast.StartDate.ToString("MM/dd/yyyy")</td>
-                    <td>@eachForecast.EndDate.ToString("MM/dd/yyyy")</td>
+                    <td>@eachForecast.Crop.CropName</td>
+                    <td>@eachForecast.Crop.Classification.ClassificationName</td>
+                    <td>@eachForecast.StartDate.ToShortDateString()</td>
+                    <td>@eachForecast.EndDate.ToShortDateString()</td>
                     <td>@eachForecast.ForecastAmount</td>
                     <td>@eachForecast.ActualSales</td>
                 </tr>
             }
         </tbody>
     </table>
+    }
+    else
+    {
+        <label>There are no search results</label>
+    }
 }
+

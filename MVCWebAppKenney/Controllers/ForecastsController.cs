@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -37,9 +38,37 @@ namespace MVCWebAppKenney.Controllers
         {
             ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
 
-            List<Forecast> forecastList = database.Forecasts.ToList<Forecast>();
+            IQueryable<Forecast> forecastList = database.Forecasts.Include(f => f.Crop).ThenInclude(c => c.Classification);
+                //.ToList<Forecast>(); ToList gets data from the databse
+                //.Include(d => d.Crop.Classification)
 
-            model.ForecastList = forecastList;
+            if (model.ClassificationID != null)
+            { 
+                forecastList = forecastList.Where(f => f.Crop.ClassificationID == model.ClassificationID);
+            }
+            
+
+            // Do it for Crop as well
+            if (model.CropID != null)
+            {
+                forecastList = forecastList.Where(f => f.Crop.CropID == model.CropID);
+            }
+
+            // Start and End date searching
+            if (model.StartSearchDate != null && model.EndSearchDate != null)
+            {
+                forecastList = forecastList.Where(f => f.StartDate >= model.StartSearchDate.Value.Date && f.EndDate <= model.EndSearchDate.Value.Date);
+            }
+            if (model.StartSearchDate != null && model.EndSearchDate == null)
+            {
+                forecastList = forecastList.Where(f => f.StartDate >= model.StartSearchDate.Value.Date);
+            }
+            if (model.StartSearchDate == null && model.EndSearchDate != null)
+            {
+                forecastList = forecastList.Where(f => f.EndDate <= model.EndSearchDate.Value.Date);
+            }
+
+            model.ForecastList = forecastList.ToList<Forecast>();
 
             return View(model);
         }
