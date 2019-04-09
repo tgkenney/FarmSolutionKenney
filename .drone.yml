@@ -50,3 +50,22 @@ steps:
     - master
     event:
     - push
+
+- name: slack-publish
+  image: plugins/slack
+  settings:
+    webhook:
+      from_secret: slack_webhook
+    channel: dev
+    username: Drone
+    template: >
+      {{#success build.status}}
+        Image successfully publish to {{repo.name}}
+      {{else}}
+        {{repo.name}} publish failed
+      {{/success}}
+  when:
+    branch:
+    - master
+    event:
+    - push
