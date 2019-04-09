@@ -11,7 +11,8 @@ steps:
     branch: 
     - master
     - feature/*
-    event: pull_request
+    - bugfix/*
+    event: push
 
 - name: slack
   image: plugins/slack
@@ -30,7 +31,8 @@ steps:
     branch: 
     - master
     - feature/*
-    event: pull_request
+    - bugfix/*
+    event: push
 
 - name: publish
   image: microsoft/dotnet:2.2-sdk
@@ -48,7 +50,3 @@ steps:
     - master
     event:
     - pull_request
-
-trigger:
-  branch:
-  - master
