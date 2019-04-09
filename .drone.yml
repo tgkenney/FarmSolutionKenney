@@ -11,7 +11,8 @@ steps:
     branch: 
     - master
     - feature/*
-    event: pull_request
+    - bugfix/*
+
 
 - name: slack
   image: plugins/slack
@@ -26,6 +27,12 @@ steps:
       {{else}}
         Build #{{build.number}} failed, please see {{build.link}}
       {{/success}}
+  when:
+    branch: 
+    - master
+    - feature/*
+    - bugfix/*
+
 
 - name: publish
   image: microsoft/dotnet:2.2-sdk
@@ -42,5 +49,23 @@ steps:
     branch:
     - master
     event:
-    - pull_request
+    - push
 
+- name: slack-publish
+  image: plugins/slack
+  settings:
+    webhook:
+      from_secret: slack_webhook
+    channel: dev
+    username: Drone
+    template: >
+      {{#success build.status}}
+        Image successfully publish to {{repo.name}}
+      {{else}}
+        {{repo.name}} publish failed
+      {{/success}}
+  when:
+    branch:
+    - master
+    event:
+    - push
