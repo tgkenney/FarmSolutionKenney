@@ -12,10 +12,13 @@ namespace MVCWebAppKenney.Models
         [Key]
         public int ForecastID { get; set; }
         public double ForecastAmount { get; set; }
+        [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
+        [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
         public double? ActualSales { get; set; }
 
+        [Required(ErrorMessage = "A crop is required")]
         public int CropID { get; set; }
         [ForeignKey("CropID")]
         public Crop Crop { get; set; }

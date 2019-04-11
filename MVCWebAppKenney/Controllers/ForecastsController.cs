@@ -12,7 +12,7 @@ using MVCWebAppKenney.ViewModels;
 
 namespace MVCWebAppKenney.Controllers
 {
-    
+
     public class ForecastsController : Controller
     {
         private ApplicationDbContext database;
@@ -39,14 +39,14 @@ namespace MVCWebAppKenney.Controllers
             ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
 
             IQueryable<Forecast> forecastList = database.Forecasts.Include(f => f.Crop).ThenInclude(c => c.Classification);
-                //.ToList<Forecast>(); ToList gets data from the databse
-                //.Include(d => d.Crop.Classification)
+            //.ToList<Forecast>(); ToList gets data from the databse
+            //.Include(d => d.Crop.Classification)
 
             if (model.ClassificationID != null)
-            { 
+            {
                 forecastList = forecastList.Where(f => f.Crop.ClassificationID == model.ClassificationID);
             }
-            
+
 
             // Do it for Crop as well
             if (model.CropID != null)
@@ -67,6 +67,14 @@ namespace MVCWebAppKenney.Controllers
             model.ForecastList = forecastList.ToList<Forecast>();
 
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult AddDemandForecast()
+        {
+            ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
+
+            return View();
         }
 
         public IActionResult ListAllForecasts()
