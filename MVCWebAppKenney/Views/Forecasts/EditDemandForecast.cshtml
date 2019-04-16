@@ -1,0 +1,35 @@
+﻿@model Forecast
+@{
+    ViewData["Title"] = "Edit Demand Forecast";
+}
+
+<h1>Edit Demand Forecast</h1>
+
+<form asp-action="EditDemandForecast" method="post">
+    
+    @Html.HiddenFor(m => m.ForecastID)
+    <div class="form-group">
+        <label>Choose a Crop</label>
+        <select asp-for="CropID" class="form-control" asp-items="ViewBag.CropList"></select>
+    </div>
+    <div class="form-group">
+        <label>Start date for the forecast</label>
+        <input asp-for="StartDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>End date for the forecast</label>
+        <input asp-for="EndDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Forecast Amount</label>
+        <input asp-for="ForecastAmount" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Actual Sales</label>
+        <input asp-for="ActualSales" class="form-control" />
+    </div>
+
+
+    <button type="submit" class="btn btn-default">Edit Forecast</button>
+
+</form>

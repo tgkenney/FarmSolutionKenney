@@ -51,19 +51,24 @@
                 <th>End Date</th>
                 <th>Demand Forecast</th>
                 <th>Actual Sales</th>
+                <th>Admin</th>
             </tr>
         </thead>
         <tbody>
             @foreach (Forecast eachForecast in Model.ForecastList)
             {
-                <tr>
-                    <td>@eachForecast.Crop.CropName</td>
-                    <td>@eachForecast.Crop.Classification.ClassificationName</td>
-                    <td>@eachForecast.StartDate.ToShortDateString()</td>
-                    <td>@eachForecast.EndDate.ToShortDateString()</td>
-                    <td>@eachForecast.ForecastAmount</td>
-                    <td>@eachForecast.ActualSales</td>
-                </tr>
+            <tr>
+                <td>@eachForecast.Crop.CropName</td>
+                <td>@eachForecast.Crop.Classification.ClassificationName</td>
+                <td>@eachForecast.StartDate.ToShortDateString()</td>
+                <td>@eachForecast.EndDate.ToShortDateString()</td>
+                <td>@eachForecast.ForecastAmount</td>
+                <td>@eachForecast.ActualSales</td>
+                <td>
+                    <a class="btn btn-info" asp-controller="Forecasts" asp-action="EditDemandForecast" asp-route-demandForecastID="@eachForecast.ForecastID">Edit</a>
+                    <a class="btn btn-danger" asp-controller="Forecasts" asp-action="DeleteDemandForecast" asp-route-demandForecastID="@eachForecast.ForecastID">Delete</a>
+                </td>
+            </tr>
             }
         </tbody>
      </table>

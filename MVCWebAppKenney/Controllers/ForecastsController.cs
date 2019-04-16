@@ -85,7 +85,34 @@ namespace MVCWebAppKenney.Controllers
             return RedirectToAction("SearchDemandForecasts");
         }
 
-        
+        [HttpGet]
+        public IActionResult EditDemandForecast(int? demandForecastID)
+        {
+            ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
+
+            Forecast demandForecast = database.Forecasts.Find(demandForecastID);
+
+            return View(demandForecast);
+        }
+
+        [HttpPost]
+        public IActionResult EditDemandForecast(Forecast demandForecast)
+        {
+            database.Forecasts.Update(demandForecast);
+            database.SaveChanges();
+
+            return RedirectToAction("SearchDemandForecasts");
+        }
+
+        [HttpGet]
+        public IActionResult DeleteDemandForecast(int? demandForecastID)
+        {
+            Forecast demandForecast = database.Forecasts.Find(demandForecastID);
+            database.Remove(demandForecast);
+            database.SaveChanges();
+
+            return RedirectToAction("SearchDemandForecasts");
+        }
 
         public IActionResult ListAllForecasts()
         {
