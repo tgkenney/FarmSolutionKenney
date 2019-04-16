@@ -82,8 +82,10 @@ namespace MVCWebAppKenney.Controllers
             database.Forecasts.Add(demandForecast);
             database.SaveChanges();
 
-            return RedirectToAction("SearchDemandForecast");
+            return RedirectToAction("SearchDemandForecasts");
         }
+
+        
 
         public IActionResult ListAllForecasts()
         {
