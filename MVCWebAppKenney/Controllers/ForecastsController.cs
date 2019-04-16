@@ -12,7 +12,7 @@ using MVCWebAppKenney.ViewModels;
 
 namespace MVCWebAppKenney.Controllers
 {
-    
+
     public class ForecastsController : Controller
     {
         private ApplicationDbContext database;
@@ -39,14 +39,14 @@ namespace MVCWebAppKenney.Controllers
             ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
 
             IQueryable<Forecast> forecastList = database.Forecasts.Include(f => f.Crop).ThenInclude(c => c.Classification);
-                //.ToList<Forecast>(); ToList gets data from the databse
-                //.Include(d => d.Crop.Classification)
+            //.ToList<Forecast>(); ToList gets data from the databse
+            //.Include(d => d.Crop.Classification)
 
             if (model.ClassificationID != null)
-            { 
+            {
                 forecastList = forecastList.Where(f => f.Crop.ClassificationID == model.ClassificationID);
             }
-            
+
 
             // Do it for Crop as well
             if (model.CropID != null)
@@ -55,15 +55,11 @@ namespace MVCWebAppKenney.Controllers
             }
 
             // Start and End date searching
-            if (model.StartSearchDate != null && model.EndSearchDate != null)
-            {
-                forecastList = forecastList.Where(f => f.StartDate >= model.StartSearchDate.Value.Date && f.EndDate <= model.EndSearchDate.Value.Date);
-            }
-            if (model.StartSearchDate != null && model.EndSearchDate == null)
+            if (model.StartSearchDate != null)
             {
                 forecastList = forecastList.Where(f => f.StartDate >= model.StartSearchDate.Value.Date);
             }
-            if (model.StartSearchDate == null && model.EndSearchDate != null)
+            if (model.EndSearchDate != null)
             {
                 forecastList = forecastList.Where(f => f.EndDate <= model.EndSearchDate.Value.Date);
             }
@@ -72,6 +68,24 @@ namespace MVCWebAppKenney.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        public IActionResult AddDemandForecast()
+        {
+            ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
+
+            return View();
+        }
+        [HttpPost]
+        public IActionResult AddDemandForecast(Forecast demandForecast)
+        {
+            database.Forecasts.Add(demandForecast);
+            database.SaveChanges();
+
+            return RedirectToAction("SearchDemandForecasts");
+        }
+
+        
 
         public IActionResult ListAllForecasts()
         {

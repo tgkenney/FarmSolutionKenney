@@ -41,8 +41,8 @@
 {
     @if(Model.ForecastList.Any())
     { 
-    <label>This is the search result</label>
-    <table class="table table-bordered table-striped">
+     <label>This is the search result</label>
+     <table class="table table-bordered table-striped">
         <thead>
             <tr>
                 <th>Crop Name</th>
@@ -66,11 +66,14 @@
                 </tr>
             }
         </tbody>
-    </table>
+     </table>
     }
     else
     {
-        <label>There are no search results</label>
+        <h4>No search results found</h4>
     }
+    <a class="btn btn-primary" asp-action="AddDemandForecast"> @*asp-controller="Forecast">*@
+        Add New Demand Forecast
+    </a>
 }
 
