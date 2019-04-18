@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using MVCWebAppKenney.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MVCWebAppKenney.Models;
 
 namespace MVCWebAppKenney
 {
@@ -38,9 +39,10 @@ namespace MVCWebAppKenney
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<ApplicationUser>()
+                .AddRoles<IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>(); // Changed IdentityUser to ApplicationUser, and added AddRoles
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

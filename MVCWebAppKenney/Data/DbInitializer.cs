@@ -1,4 +1,6 @@
-﻿using MVCWebAppKenney.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+using MVCWebAppKenney.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +17,23 @@ namespace MVCWebAppKenney.Data
         // Class or static method
         //Crop.FindCrop();
 
-        public static void Initialize(ApplicationDbContext database)
+        public static void Initialize(IServiceProvider services)
         {
+            // Database
+            ApplicationDbContext database = services.GetRequiredService<ApplicationDbContext>();
+
+            // Users
+            UserManager<ApplicationUser> userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+            RoleManager<IdentityRole> roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+            if (!database.ApplicationUsers.Any())
+            {
+                ApplicationUser applicationUser = new ApplicationUser("Test", "Analyst1", "TestAnalyst1@wvu.edu", "304-000-0001", "TestAnalyst1");
+                database.ApplicationUsers.Add(applicationUser);
+
+
+                database.SaveChanges();
+            }
             // Classifications
             if (!database.Classifications.Any())
             {
