@@ -29,8 +29,7 @@ namespace MVCWebAppKenney.Data
             if (!database.ApplicationUsers.Any())
             {
                 ApplicationUser applicationUser = new ApplicationUser("Test", "Analyst1", "TestAnalyst1@wvu.edu", "304-000-0001", "TestAnalyst1");
-                database.ApplicationUsers.Add(applicationUser);
-
+                userManager.CreateAsync(applicationUser);
 
                 database.SaveChanges();
             }
