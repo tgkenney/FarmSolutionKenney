@@ -26,17 +26,19 @@ namespace MVCWebAppKenney.Data
             UserManager<ApplicationUser> userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
             RoleManager<IdentityRole> roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-            if (!database.ApplicationUsers.Any())
-            {
-                ApplicationUser applicationUser = new ApplicationUser("Test", "Analyst1", "TestAnalyst1@wvu.edu", "304-000-0001", "TestAnalyst1");
-                await userManager.CreateAsync(applicationUser);
-
-                database.SaveChanges();
-            }
             // Roles
             string roleAnalyst = "Analyst";
             string roleFarmer = "Farmer";
 
+            if (!database.ApplicationUsers.Any())
+            {
+                ApplicationUser applicationUser = new ApplicationUser("Test", "Analyst1", "TestAnalyst1@wvu.edu", "304-000-0001", "TestAnalyst1");
+                await userManager.CreateAsync(applicationUser);
+                await userManager.AddToRoleAsync(applicationUser, roleAnalyst);
+
+                database.SaveChanges();
+            }
+            // Roles
             if (!database.Roles.Any())
             {
                 IdentityRole role = new IdentityRole(roleAnalyst);
@@ -46,11 +48,6 @@ namespace MVCWebAppKenney.Data
                 await roleManager.CreateAsync(role);
 
                 database.SaveChanges();
-            }
-            // User Roles
-            if (!database.UserRoles.Any())
-            {
-                
             }
             // Classifications
             if (!database.Classifications.Any())
