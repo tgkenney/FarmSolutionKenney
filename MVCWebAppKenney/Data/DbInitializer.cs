@@ -17,7 +17,7 @@ namespace MVCWebAppKenney.Data
         // Class or static method
         //Crop.FindCrop();
 
-        public static void Initialize(IServiceProvider services)
+        public async static Task Initialize(IServiceProvider services)
         {
             // Database
             ApplicationDbContext database = services.GetRequiredService<ApplicationDbContext>();
@@ -29,9 +29,28 @@ namespace MVCWebAppKenney.Data
             if (!database.ApplicationUsers.Any())
             {
                 ApplicationUser applicationUser = new ApplicationUser("Test", "Analyst1", "TestAnalyst1@wvu.edu", "304-000-0001", "TestAnalyst1");
-                userManager.CreateAsync(applicationUser);
+                await userManager.CreateAsync(applicationUser);
 
                 database.SaveChanges();
+            }
+            // Roles
+            string roleAnalyst = "Analyst";
+            string roleFarmer = "Farmer";
+
+            if (!database.Roles.Any())
+            {
+                IdentityRole role = new IdentityRole(roleAnalyst);
+                await roleManager.CreateAsync(role);
+
+                role = new IdentityRole(roleFarmer);
+                await roleManager.CreateAsync(role);
+
+                database.SaveChanges();
+            }
+            // User Roles
+            if (!database.UserRoles.Any())
+            {
+                
             }
             // Classifications
             if (!database.Classifications.Any())
