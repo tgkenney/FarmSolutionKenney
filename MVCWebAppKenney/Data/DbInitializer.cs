@@ -1,4 +1,6 @@
-﻿using MVCWebAppKenney.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+using MVCWebAppKenney.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +17,41 @@ namespace MVCWebAppKenney.Data
         // Class or static method
         //Crop.FindCrop();
 
-        public static void Initialize(ApplicationDbContext database)
+        public async static Task Initialize(IServiceProvider services)
         {
+            // Services
+            ApplicationDbContext database = services.GetRequiredService<ApplicationDbContext>();
+            UserManager<ApplicationUser> userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+            RoleManager<IdentityRole> roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+            // Role strings
+            string roleAnalyst = "Analyst";
+            string roleFarmer = "Farmer";
+
+            // Roles
+            if (!database.Roles.Any())
+            {
+                IdentityRole role = new IdentityRole(roleAnalyst);
+                await roleManager.CreateAsync(role);
+
+                role = new IdentityRole(roleFarmer);
+                await roleManager.CreateAsync(role);
+
+                database.SaveChanges();
+            }
+            // Users
+            if (!database.ApplicationUsers.Any())
+            {
+                ApplicationUser applicationUser = new ApplicationUser("Test", "Analyst1", "TestAnalyst1@wvu.edu", "304-000-0001", "TestAnalyst1");
+                await userManager.CreateAsync(applicationUser);
+                await userManager.AddToRoleAsync(applicationUser, roleAnalyst);
+
+                applicationUser = new ApplicationUser("Test", "Farmer1", "TestFarmer1@wvu.edu", "304-000-0002", "TestFarmer1");
+                await userManager.CreateAsync(applicationUser);
+                await userManager.AddToRoleAsync(applicationUser, roleFarmer);
+
+                database.SaveChanges();
+            }
             // Classifications
             if (!database.Classifications.Any())
             {

@@ -26,8 +26,8 @@ namespace MVCWebAppKenney
 
                 try
                 {
-                    var context = services.GetRequiredService<ApplicationDbContext>();
-                    DbInitializer.Initialize(context);
+                    //var context = services.GetRequiredService<ApplicationDbContext>();
+                    DbInitializer.Initialize(services).Wait();
                 }
                 catch (Exception ex)
                 {
