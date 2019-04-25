@@ -40,7 +40,7 @@
 @if (Model.ForecastList != null)
 {
     @if(Model.ForecastList.Any())
-    { 
+    {
      <label>This is the search result</label>
      <table class="table table-bordered table-striped">
         <thead>
@@ -51,7 +51,10 @@
                 <th>End Date</th>
                 <th>Demand Forecast</th>
                 <th>Actual Sales</th>
-                <th>Admin</th>
+                @if (User.IsInRole("Analyst"))
+                {
+                    <th>Admin</th>
+                }
             </tr>
         </thead>
         <tbody>
@@ -64,10 +67,13 @@
                 <td>@eachForecast.EndDate.ToShortDateString()</td>
                 <td>@eachForecast.ForecastAmount</td>
                 <td>@eachForecast.ActualSales</td>
-                <td>
-                    <a class="btn btn-info" asp-controller="Forecasts" asp-action="EditDemandForecast" asp-route-demandForecastID="@eachForecast.ForecastID">Edit</a>
-                    <a class="btn btn-danger" asp-controller="Forecasts" asp-action="DeleteDemandForecast" asp-route-demandForecastID="@eachForecast.ForecastID">Delete</a>
-                </td>
+                @if (User.IsInRole("Analyst"))
+                {
+                    <td>
+                        <a class="btn btn-info" asp-controller="Forecasts" asp-action="EditDemandForecast" asp-route-demandForecastID="@eachForecast.ForecastID">Edit</a>
+                        <a class="btn btn-danger" asp-controller="Forecasts" asp-action="DeleteDemandForecast" asp-route-demandForecastID="@eachForecast.ForecastID">Delete</a>
+                    </td>
+                }
             </tr>
             }
         </tbody>
@@ -77,8 +83,11 @@
     {
         <h4>No search results found</h4>
     }
-    <a class="btn btn-primary" asp-action="AddDemandForecast"> @*asp-controller="Forecast">*@
-        Add New Demand Forecast
-    </a>
+    if (User.IsInRole("Analyst"))
+    {
+        <a class="btn btn-primary" asp-action="AddDemandForecast"> @*asp-controller="Forecast">*@
+            Add New Demand Forecast
+        </a>
+    }
 }
 

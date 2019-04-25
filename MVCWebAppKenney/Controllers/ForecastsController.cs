@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,7 @@ namespace MVCWebAppKenney.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult SearchDemandForecasts()
         {
             ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
@@ -34,6 +36,7 @@ namespace MVCWebAppKenney.Controllers
             return View(model);
         }
         [HttpPost]
+        [Authorize]
         public IActionResult SearchDemandForecasts(SearchForecastsViewModel model)
         {
             ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
@@ -70,6 +73,7 @@ namespace MVCWebAppKenney.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Analyst")]
         public IActionResult AddDemandForecast()
         {
             ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
@@ -77,6 +81,7 @@ namespace MVCWebAppKenney.Controllers
             return View();
         }
         [HttpPost]
+        [Authorize(Roles = "Analyst")]
         public IActionResult AddDemandForecast(Forecast demandForecast)
         {
             database.Forecasts.Add(demandForecast);
@@ -86,6 +91,7 @@ namespace MVCWebAppKenney.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Analyst")]
         public IActionResult EditDemandForecast(int? demandForecastID)
         {
             ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
@@ -96,6 +102,7 @@ namespace MVCWebAppKenney.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Analyst")]
         public IActionResult EditDemandForecast(Forecast demandForecast)
         {
             database.Forecasts.Update(demandForecast);
@@ -105,6 +112,7 @@ namespace MVCWebAppKenney.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Analyst")]
         public IActionResult DeleteDemandForecast(int? demandForecastID)
         {
             Forecast demandForecast = database.Forecasts.Find(demandForecastID);
