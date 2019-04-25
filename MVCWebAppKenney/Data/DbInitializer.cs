@@ -19,25 +19,15 @@ namespace MVCWebAppKenney.Data
 
         public async static Task Initialize(IServiceProvider services)
         {
-            // Database
+            // Services
             ApplicationDbContext database = services.GetRequiredService<ApplicationDbContext>();
-
-            // Users
             UserManager<ApplicationUser> userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
             RoleManager<IdentityRole> roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-            // Roles
+            // Role strings
             string roleAnalyst = "Analyst";
             string roleFarmer = "Farmer";
 
-            if (!database.ApplicationUsers.Any())
-            {
-                ApplicationUser applicationUser = new ApplicationUser("Test", "Analyst1", "TestAnalyst1@wvu.edu", "304-000-0001", "TestAnalyst1");
-                await userManager.CreateAsync(applicationUser);
-                await userManager.AddToRoleAsync(applicationUser, roleAnalyst);
-
-                database.SaveChanges();
-            }
             // Roles
             if (!database.Roles.Any())
             {
@@ -46,6 +36,19 @@ namespace MVCWebAppKenney.Data
 
                 role = new IdentityRole(roleFarmer);
                 await roleManager.CreateAsync(role);
+
+                database.SaveChanges();
+            }
+            // Users
+            if (!database.ApplicationUsers.Any())
+            {
+                ApplicationUser applicationUser = new ApplicationUser("Test", "Analyst1", "TestAnalyst1@wvu.edu", "304-000-0001", "TestAnalyst1");
+                await userManager.CreateAsync(applicationUser);
+                await userManager.AddToRoleAsync(applicationUser, roleAnalyst);
+
+                applicationUser = new ApplicationUser("Test", "Farmer1", "TestFarmer1@wvu.edu", "304-000-0002", "TestFarmer1");
+                await userManager.CreateAsync(applicationUser);
+                await userManager.AddToRoleAsync(applicationUser, roleFarmer);
 
                 database.SaveChanges();
             }
