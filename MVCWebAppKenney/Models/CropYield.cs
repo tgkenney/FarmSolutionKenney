@@ -11,8 +11,8 @@ namespace MVCWebAppKenney.Models
     {
         [Key]
         public int CropYieldID { get; set; }
-        public double YieldAmount { get; set; }
-        public DateTime YieldYear { get; set; }
+        public double ProductionAmount { get; set; }
+        public int ProductionYear { get; set; }
 
         // Link to Crop
         public int CropID { get; set; }
