@@ -15,11 +15,13 @@ namespace MVCWebAppKenney.Models
         public int ProductionYear { get; set; }
 
         // Link to Crop
+        [Required(ErrorMessage = "A crop is required")]
         public int CropID { get; set; }
         [ForeignKey("CropID")]
         public Crop Crop { get; set; }
 
         // Link to Farm
+        [Required(ErrorMessage = "A farm is required")]
         public int FarmID { get; set; }
         [ForeignKey("FarmID")]
         public Farm Farm { get; set; }
