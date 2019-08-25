@@ -58,7 +58,27 @@ namespace MVCWebAppKenney.Controllers
             ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
             ViewData["FarmList"] = new SelectList(database.Farms, "FarmID", "FarmName");
 
-            // IQueryable<CropYield> cropYieldsList = database.CropYields.Include(cY => cY.Crop).
+            IQueryable<CropYield> cropYieldsList = database.CropYields.Include(cY => cY.Crop).Include(cY => cY.Farm);
+
+            // Search by farm
+            if (model.FarmID != null)
+            {
+                cropYieldsList = cropYieldsList.Where(cY => cY.FarmID == model.FarmID);
+            }
+
+            // Search by crop
+            if (model.CropID != null)
+            {
+                cropYieldsList = cropYieldsList.Where(cY => cY.CropID == model.CropID);
+            }
+
+            // Search by year
+            if (model.SearchProductionYear != null)
+            {
+                cropYieldsList = cropYieldsList.Where(cY => cY.ProductionYear == model.SearchProductionYear);
+            }
+
+            model.CropYieldList = cropYieldsList.ToList<CropYield>();
 
             return View(model);
         }

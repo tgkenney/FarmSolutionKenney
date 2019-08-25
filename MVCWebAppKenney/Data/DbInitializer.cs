@@ -570,6 +570,15 @@ namespace MVCWebAppKenney.Data
                 };
                 database.CropYields.Add(cropYield);
 
+                cropYield = new CropYield
+                {
+                    ProductionAmount = 500,
+                    ProductionYear = 2019,
+                    CropID = 2,
+                    FarmID = 2
+                };
+                database.CropYields.Add(cropYield);
+
                 database.SaveChanges();
             }
         }

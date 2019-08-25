@@ -39,12 +39,15 @@
                             </li>
                             //if (User.IsInRole("Analyst"))
                             //{
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Forecasts" asp-action="SearchDemandForecasts">Search Forecasts</a>
-                                </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Forecasts" asp-action="SearchDemandForecasts">Search Forecasts</a>
+                            </li>
                             //}
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="CanProduce" asp-action="ListAllFarmsAndCrops">Farms with Crops</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Crops" asp-action="SearchCropYields">Crop yields</a>
                             </li>
                         }
                     </ul>

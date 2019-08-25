@@ -11,7 +11,7 @@ namespace MVCWebAppKenney.ViewModels
         // User inputs for search
         public int? CropID { get; set; }
         public int? FarmID { get; set; }
-        public int SearchProductionYear { get; set; }
+        public int? SearchProductionYear { get; set; }
 
         // Search result
         public List<CropYield> CropYieldList { get; set; }
