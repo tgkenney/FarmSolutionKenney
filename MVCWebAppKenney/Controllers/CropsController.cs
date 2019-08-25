@@ -23,24 +23,6 @@ namespace MVCWebAppKenney.Controllers
         }
 
         [HttpGet]
-        public IActionResult SearchCrops()
-        {
-            return View();
-        }
-        [HttpPost]
-        public IActionResult SearchCrops(int ClassificationID)
-        {
-            return View();
-        }
-
-        public IActionResult ListAllCrops()
-        {
-            List<Crop> cropList = database.Crops.Include(c => c.Classification).ToList<Crop>();
-
-            return View(cropList);
-        }
-
-        [HttpGet]
         [Authorize]
         public IActionResult SearchCropYields()
         {
@@ -81,6 +63,57 @@ namespace MVCWebAppKenney.Controllers
             model.CropYieldList = cropYieldsList.ToList<CropYield>();
 
             return View(model);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Farmer")]
+        public IActionResult AddCropYield()
+        {
+            ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
+            ViewData["FarmList"] = new SelectList(database.Farms, "FarmID", "FarmName");
+
+            return View();
+        }
+        [HttpPost]
+        [Authorize(Roles = "Farmer")]
+        public IActionResult AddCropYield(CropYield cropYield)
+        {
+            database.CropYields.Add(cropYield);
+            database.SaveChanges();
+
+            return RedirectToAction("SearchCropYields");
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Farmer")]
+        public IActionResult EditCropYield(int? cropYieldID)
+        {
+            ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
+            ViewData["FarmList"] = new SelectList(database.Farms, "FarmID", "FarmName");
+
+            CropYield cropYield = database.CropYields.Find(cropYieldID);
+
+            return View(cropYield);
+        }
+        [HttpPost]
+        [Authorize(Roles = "Farmer")]
+        public IActionResult EditCropYield(CropYield cropYield)
+        {
+            database.CropYields.Update(cropYield);
+            database.SaveChanges();
+
+            return RedirectToAction("SearchCropYields");
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Farmer")]
+        public IActionResult DeleteCropYield(int? cropYieldID)
+        {
+            CropYield cropYield = database.CropYields.Find(cropYieldID);
+            database.Remove(cropYield);
+            database.SaveChanges();
+
+            return RedirectToAction("SearchCropYields");
         }
     }
 }

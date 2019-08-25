@@ -40,6 +40,10 @@
                     <th>Farm Name</th>
                     <th>Production Year</th>
                     <th>Production Amount</th>
+                    @if (User.IsInRole("Farmer"))
+                    {
+                        <th>Actions</th>
+                    }
                 </tr>
             </thead>
             <tbody>
@@ -50,6 +54,13 @@
                         <td>@eachCropYield.Farm.FarmName</td>
                         <td>@eachCropYield.ProductionYear</td>
                         <td>@eachCropYield.ProductionAmount</td>
+                        @if (User.IsInRole("Farmer"))
+                        {
+                            <td>
+                                <a class="btn btn-info" asp-controller="Crops" asp-action="EditCropYield" asp-route-cropYieldID="@eachCropYield.CropYieldID">Edit</a>
+                                <a class="btn btn-danger" asp-controller="Crops" asp-action="DeleteCropYield" asp-route-cropYieldID="@eachCropYield.CropYieldID">Delete</a>
+                            </td>
+                        }
                     </tr>
                 }
             </tbody>
@@ -58,5 +69,9 @@
     else
     {
         <h4>No search results found</h4>
+    }
+    if (User.IsInRole("Farmer"))
+    {
+        <a class="btn btn-primary" asp-action="AddCropYield">Add new crop yield</a>
     }
 }
