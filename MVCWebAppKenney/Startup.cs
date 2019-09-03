@@ -14,6 +14,7 @@ using MVCWebAppKenney.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MVCWebAppKenney.Models;
+using MVCWebAppKenney.Models.CropModel;
 
 namespace MVCWebAppKenney
 {
@@ -45,6 +46,9 @@ namespace MVCWebAppKenney
                 .AddEntityFrameworkStores<ApplicationDbContext>(); // Changed IdentityUser to ApplicationUser, and added AddRoles
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            // Connecting link for interfaces
+            services.AddTransient<ICropRepo, CropRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

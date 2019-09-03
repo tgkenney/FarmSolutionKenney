@@ -8,20 +8,27 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MVCWebAppKenney.Data;
 using MVCWebAppKenney.Models;
+using MVCWebAppKenney.Models.CropModel;
 using MVCWebAppKenney.ViewModels;
 
 namespace MVCWebAppKenney.Controllers
 {
     public class CropsController : Controller
     {
-        // Private attribute for the database
-        private ApplicationDbContext database;
+        private ICropRepo cropRepoInterface;
 
-        public CropsController(ApplicationDbContext dbContext)
+        public CropsController(ICropRepo cropRepoInterface)
         {
-            database = dbContext;
+            this.cropRepoInterface = cropRepoInterface;
         }
 
+        public IActionResult ListAllCrops()
+        {
+            List<Crop> cropList = cropRepoInterface.ListAllCrops();
+
+            return View(cropList);
+        }
+        /*
         [HttpGet]
         [Authorize]
         public IActionResult SearchCropYields()
@@ -61,6 +68,13 @@ namespace MVCWebAppKenney.Controllers
             }
 
             model.CropYieldList = cropYieldsList.ToList<CropYield>();
+
+            model.TotalCropYield = 0;
+
+            foreach (CropYield cropYield in model.CropYieldList)
+            {
+                model.TotalCropYield += cropYield.ProductionAmount;
+            };
 
             return View(model);
         }
@@ -115,5 +129,6 @@ namespace MVCWebAppKenney.Controllers
 
             return RedirectToAction("SearchCropYields");
         }
+        */
     }
 }
