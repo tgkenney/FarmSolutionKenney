@@ -23,7 +23,9 @@ namespace UnitTestProjectKenney
 
             IActionResult result = cropsController.ListAllCrops();
 
-            
+            // Count the numbers of rows (actual)
+            // Expected number of rows (3)
+            // Assert.Equal(expectedNumberOfRows, actualNumberOfRow);
 
         }
 
