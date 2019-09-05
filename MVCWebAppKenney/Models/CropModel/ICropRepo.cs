@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MVCWebAppKenney.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,9 @@ namespace MVCWebAppKenney.Models.CropModel
     {
         // List of actions or methods promised
         List<Crop> ListAllCrops();
+        List<Crop> SearchCrops(int? classficationID);
+        SearchCropYieldsViewModel SearchCropYields();
+        SearchCropYieldsViewModel SearchCropYields(SearchCropYieldsViewModel model);
 
         /*
          * 1. AddCrop()
