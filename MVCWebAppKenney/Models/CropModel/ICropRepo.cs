@@ -11,7 +11,13 @@ namespace MVCWebAppKenney.Models.CropModel
         // List of actions or methods promised
         List<Crop> ListAllCrops();
         List<Crop> SearchCrops(int? classficationID);
-        SearchCropYieldsViewModel SearchCropYields();
+        // When altering or changing data (add,edit,delete)
+        // Recommendation is to use async instead of synchronous
+        // Async methods, return type is a task
+        // whether or not the task is completed
+        Task AddCrop(Crop crop);
+        Task EditCrop(Crop crop);
+        Task DeleteCrop(int cropID);
         SearchCropYieldsViewModel SearchCropYields(SearchCropYieldsViewModel model);
 
         /*

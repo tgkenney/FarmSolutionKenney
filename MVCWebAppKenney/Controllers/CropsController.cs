@@ -28,13 +28,38 @@ namespace MVCWebAppKenney.Controllers
 
             return View(cropList);
         }
+        
+        [HttpGet]
+        public IActionResult SearchCrops()
+        {
 
+            return View();
+        }
+
+        [HttpPost]
         public IActionResult SearchCrops(int? classificationID)
         {
             List<Crop> cropList = cropRepoInterface.SearchCrops(classificationID);
 
             return View(cropList);
         }
+
+        [HttpGet]
+        public IActionResult AddCrop()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddCrop(Crop crop)
+        {
+            await cropRepoInterface.AddCrop(crop);
+
+            return RedirectToAction("ListAllCrops");
+        }
+
+
+
         /*
         [HttpGet]
         [Authorize]

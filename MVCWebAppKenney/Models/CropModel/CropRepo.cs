@@ -34,12 +34,6 @@ namespace MVCWebAppKenney.Models.CropModel
             return cropList;
         }
 
-        public SearchCropYieldsViewModel SearchCropYields()
-        {
-            SearchCropYieldsViewModel model = new SearchCropYieldsViewModel();
-
-            return model;
-        }
         public SearchCropYieldsViewModel SearchCropYields(SearchCropYieldsViewModel model)
         {
             IQueryable<CropYield> cropYieldsList = database.CropYields.Include(cY => cY.Crop).Include(cY => cY.Farm);
@@ -58,6 +52,28 @@ namespace MVCWebAppKenney.Models.CropModel
 
 
             return model;
+        }
+
+        public Task AddCrop(Crop crop)
+        {
+            database.Crops.AddAsync(crop);
+
+            return database.SaveChangesAsync();
+        }
+
+        public Task EditCrop(Crop crop)
+        {
+            database.Crops.Update(crop);
+
+            return database.SaveChangesAsync();
+        }
+
+        public Task DeleteCrop(int cropID)
+        {
+            Crop crop = database.Crops.Find(cropID);
+            database.Crops.Remove(crop);
+
+            return database.SaveChangesAsync();
         }
     } // end class
 } // end namespace

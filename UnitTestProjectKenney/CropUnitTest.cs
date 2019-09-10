@@ -5,6 +5,7 @@ using MVCWebAppKenney.Models;
 using MVCWebAppKenney.Models.CropModel;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace UnitTestProjectKenney
@@ -40,8 +41,11 @@ namespace UnitTestProjectKenney
 
         }
 
+        [Fact]
         public void ShouldReturnViewForSearchCrops()
         {
+            // Testing
+            // 1. Arrange
             Mock<ICropRepo> mockCropRepo = new Mock<ICropRepo>();
             List<Crop> mockCropList = PopulateCrops();
 
@@ -49,13 +53,45 @@ namespace UnitTestProjectKenney
 
             mockCropRepo.Setup(m => m.SearchCrops(It.IsAny<Int32?>())).Returns(mockCropList.FindAll(c => c.ClassificationID == classficationID));
 
+            // 2. Act
             CropsController cropsController = new CropsController(mockCropRepo.Object);
 
             IActionResult result = cropsController.SearchCrops(classficationID);
 
+            // 3. Assert
             ViewResult viewResult = Assert.IsType<ViewResult>(result);
 
             List<Crop> viewResultModel = viewResult.Model as List<Crop>;
+
+            Assert.Equal(viewResultModel.Count, mockCropList.FindAll(m => m.ClassificationID == classficationID).Count);
+            Assert.Equal<List<Crop>>(mockCropList.FindAll(m => m.ClassificationID == classficationID), viewResultModel);
+        }
+
+        [Fact]
+        public void ShouldAddNewCrop()
+        {
+            // 1. Arrange
+            Mock<ICropRepo> mockCropRepo = new Mock<ICropRepo>();
+
+            Crop expectedCrop = new Crop
+            {
+                CropID = 1,
+                CropName = "Apple",
+                CropVariety = null,
+                ClassificationID = 1
+            };
+
+            Crop addedCrop = null;
+
+            mockCropRepo.Setup(m => m.AddCrop(It.IsAny<Crop>())).Returns(Task.CompletedTask).Callback<Crop>(m => addedCrop = m);
+
+            // 2. Act
+            CropsController cropsController = new CropsController(mockCropRepo.Object);
+
+            var actualAddedCrop = cropsController.AddCrop(expectedCrop);
+
+            // 3. Assert
+            Assert.Equal(expectedCrop.CropName, addedCrop.CropName);
         }
 
         private List<Crop> PopulateCrops()
@@ -82,7 +118,7 @@ namespace UnitTestProjectKenney
 
             crop = new Crop
             {
-                CropID = 1,
+                CropID = 3,
                 CropName = "Basil",
                 CropVariety = null,
                 ClassificationID = 3
