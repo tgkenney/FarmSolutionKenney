@@ -51,7 +51,7 @@ namespace MVCWebAppKenney.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddCrop(Crop crop)
+        public async Task<IActionResult> AddCrop(Crop crop)
         {
             await cropRepoInterface.AddCrop(crop);
 

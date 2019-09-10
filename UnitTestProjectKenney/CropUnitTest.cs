@@ -92,6 +92,7 @@ namespace UnitTestProjectKenney
 
             // 3. Assert
             Assert.Equal(expectedCrop.CropName, addedCrop.CropName);
+            Assert.Equal(expectedCrop, addedCrop);
         }
 
         private List<Crop> PopulateCrops()
