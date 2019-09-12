@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,12 @@ namespace MVCWebAppKenney.Controllers
 {
     public class CropsController : Controller
     {
+        private ApplicationDbContext database;
+        public CropsController(ApplicationDbContext dbContext)
+        {
+            database = dbContext;
+        }
+
         private ICropRepo cropRepoInterface;
 
         public CropsController(ICropRepo cropRepoInterface)
@@ -129,28 +136,35 @@ namespace MVCWebAppKenney.Controllers
 
             return RedirectToAction("SearchCropYields");
         }
-
+        */
         [HttpGet]
         [Authorize(Roles = "Farmer")]
         public IActionResult EditCropYield(int? cropYieldID)
         {
             ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
-            ViewData["FarmList"] = new SelectList(database.Farms, "FarmID", "FarmName");
+            // ViewData["FarmList"] = new SelectList(database.Farms, "FarmID", "FarmName");
 
             CropYield cropYield = database.CropYields.Find(cropYieldID);
 
             return View(cropYield);
         }
+       
         [HttpPost]
         [Authorize(Roles = "Farmer")]
         public IActionResult EditCropYield(CropYield cropYield)
         {
-            database.CropYields.Update(cropYield);
-            database.SaveChanges();
+            string userID = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            Farmer farmer = database.Users.Find(userID) as Farmer;
+
+            if (farmer.FarmID == cropYield.FarmID)
+            {
+                database.CropYields.Update(cropYield);
+                database.SaveChanges();
+            }
 
             return RedirectToAction("SearchCropYields");
         }
-
+        /*
         [HttpGet]
         [Authorize(Roles = "Farmer")]
         public IActionResult DeleteCropYield(int? cropYieldID)

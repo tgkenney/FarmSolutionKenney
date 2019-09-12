@@ -24,6 +24,47 @@ namespace MVCWebAppKenney.Data
             UserManager<ApplicationUser> userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
             RoleManager<IdentityRole> roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
+            // Farms
+            if (!database.Farms.Any())
+            {
+
+                Farm farm = new Farm
+                {
+                    FarmName = "Grow OV",
+                    FarmAddress = "1006 Grandview St, Wheeling, WV 26003",
+                    FarmSize = 5500
+                };
+                database.Farms.Add(farm);
+
+                farm = new Farm
+                {
+                    FarmName = "Bluebird",
+                    FarmAddress = "190 Alamo Rd SE, Carrollton, OH 44615",
+                    FarmSize = 3000
+                };
+                database.Farms.Add(farm);
+
+                farm = new Farm
+                {
+                    FarmName = "Family Roots",
+                    FarmAddress = "245 Hervey Ln, Wellsburg, WV 26070",
+                    FarmSize = 1000
+                };
+                database.Farms.Add(farm);
+
+                database.Farms.Add(farm);
+
+                farm = new Farm
+                {
+                    FarmName = "Oak Hill",
+                    FarmAddress = "37 Old Trails Rd. Avella, PA 15312",
+                    FarmSize = 1500
+                };
+                database.Farms.Add(farm);
+
+                database.SaveChanges();
+            }
+
             // Role strings
             string roleAnalyst = "Analyst";
             string roleFarmer = "Farmer";
@@ -46,11 +87,15 @@ namespace MVCWebAppKenney.Data
                 await userManager.CreateAsync(applicationUser);
                 await userManager.AddToRoleAsync(applicationUser, roleAnalyst);
 
-                applicationUser = new ApplicationUser("Test", "Farmer1", "TestFarmer1@wvu.edu", "304-000-0002", "TestFarmer1");
+                applicationUser = new Farmer("Test", "Farmer1", "TestFarmer1@wvu.edu", "304-000-0002", "TestFarmer1", 1);
                 await userManager.CreateAsync(applicationUser);
                 await userManager.AddToRoleAsync(applicationUser, roleFarmer);
 
-                database.SaveChanges();
+                applicationUser = new Farmer("Test", "Farmer2", "TestFarmer2@wvu.edu", "304-000-0003", "TestFarmer2", 2);
+                await userManager.CreateAsync(applicationUser);
+                await userManager.AddToRoleAsync(applicationUser, roleFarmer);
+
+                // database.SaveChanges();
             }
             // Classifications
             if (!database.Classifications.Any())
@@ -231,46 +276,6 @@ namespace MVCWebAppKenney.Data
                 };
                 database.Crops.Add(crop);
 
-                database.SaveChanges();
-            }
-            // Farms
-            if (!database.Farms.Any())
-            {
-                
-                Farm farm = new Farm
-                {
-                    FarmName = "Grow OV",
-                    FarmAddress = "1006 Grandview St, Wheeling, WV 26003",
-                    FarmSize = 5500
-                };
-                database.Farms.Add(farm);
-
-                farm = new Farm
-                {
-                    FarmName = "Bluebird",
-                    FarmAddress = "190 Alamo Rd SE, Carrollton, OH 44615",
-                    FarmSize = 3000
-                };
-                database.Farms.Add(farm);
-
-                farm = new Farm
-                {
-                    FarmName = "Family Roots",
-                    FarmAddress = "245 Hervey Ln, Wellsburg, WV 26070",
-                    FarmSize = 1000
-                };
-                database.Farms.Add(farm);
-
-                database.Farms.Add(farm);
-
-                farm = new Farm
-                {
-                    FarmName = "Oak Hill",
-                    FarmAddress = "37 Old Trails Rd. Avella, PA 15312",
-                    FarmSize = 1500
-                };
-                database.Farms.Add(farm);
-                
                 database.SaveChanges();
             }
             // CanProduce

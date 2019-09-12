@@ -22,5 +22,6 @@ namespace MVCWebAppKenney.Data
         public DbSet<Forecast> Forecasts { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<CropYield> CropYields { get; set; }
+        public DbSet<Farmer> Farmers { get; set; }
     } // end class
 } // end namespace

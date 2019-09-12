@@ -15,5 +15,6 @@ namespace MVCWebAppKenney.Models
         public double FarmSize { get; set; }
 
         public List<CanProduce> CropsThatCanBeProduced { get; set; }
+        public List<Farmer> FarmersThatWorkHere { get; set; }
     }
 }
