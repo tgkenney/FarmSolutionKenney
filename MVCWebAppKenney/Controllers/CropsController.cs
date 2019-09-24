@@ -10,23 +10,63 @@ using Microsoft.EntityFrameworkCore;
 using MVCWebAppKenney.Data;
 using MVCWebAppKenney.Models;
 using MVCWebAppKenney.Models.CropModel;
+using MVCWebAppKenney.Models.CropYieldModel;
+using MVCWebAppKenney.Models.FarmModel;
 using MVCWebAppKenney.ViewModels;
 
 namespace MVCWebAppKenney.Controllers
 {
     public class CropsController : Controller
     {
-        private ApplicationDbContext database;
-        public CropsController(ApplicationDbContext dbContext)
+        private ICropYieldRepo cropYieldRepoInterface;
+        private ICropRepo cropRepoInterface;
+        private IFarmRepo farmRepoInterface;
+
+        public CropsController(ICropYieldRepo cropYieldRepo, ICropRepo cropRepo, IFarmRepo farmRepo)
         {
-            database = dbContext;
+            this.cropRepoInterface = cropRepo;
+            this.cropYieldRepoInterface = cropYieldRepo;
+            this.farmRepoInterface = farmRepo;
         }
 
-        private ICropRepo cropRepoInterface;
-
-        public CropsController(ICropRepo cropRepoInterface)
+        public void PopulateDropDownList()
         {
-            this.cropRepoInterface = cropRepoInterface;
+            ViewData["CropList"] = new SelectList(cropRepoInterface.ListAllCrops(), "CropID", "CropName");
+            ViewData["FarmList"] = new SelectList(farmRepoInterface.ListAllFarms(), "FarmID", "FarmName");
+        }
+
+        public SearchCropYieldsViewModel SearchCropYieldsHelper(SearchCropYieldsViewModel model)
+        {
+            IQueryable<CropYield> cropYieldsList = cropYieldRepoInterface.CropYieldList;
+
+            // Search by farm
+            if (model.FarmID != null)
+            {
+                cropYieldsList = cropYieldsList.Where(cY => cY.FarmID == model.FarmID);
+            }
+
+            // Search by crop
+            if (model.CropID != null)
+            {
+                cropYieldsList = cropYieldsList.Where(cY => cY.CropID == model.CropID);
+            }
+
+            // Search by year
+            if (model.SearchProductionYear != null)
+            {
+                cropYieldsList = cropYieldsList.Where(cY => cY.ProductionYear == model.SearchProductionYear);
+            }
+
+            model.CropYieldList = cropYieldsList.ToList<CropYield>();
+
+            model.TotalCropYield = 0;
+
+            foreach (CropYield cropYield in model.CropYieldList)
+            {
+                model.TotalCropYield += cropYield.ProductionAmount;
+            };
+
+            return model;
         }
 
         public IActionResult ListAllCrops()
@@ -64,16 +104,12 @@ namespace MVCWebAppKenney.Controllers
 
             return RedirectToAction("ListAllCrops");
         }
-
-
-
-        /*
+        
         [HttpGet]
         [Authorize]
         public IActionResult SearchCropYields()
         {
-            ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
-            ViewData["FarmList"] = new SelectList(database.Farms, "FarmID", "FarmName");
+            PopulateDropDownList();
 
             SearchCropYieldsViewModel model = new SearchCropYieldsViewModel();
 
@@ -83,47 +119,18 @@ namespace MVCWebAppKenney.Controllers
         [Authorize]
         public IActionResult SearchCropYields(SearchCropYieldsViewModel model)
         {
-            ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
-            ViewData["FarmList"] = new SelectList(database.Farms, "FarmID", "FarmName");
+            PopulateDropDownList();
 
-            IQueryable<CropYield> cropYieldsList = database.CropYields.Include(cY => cY.Crop).Include(cY => cY.Farm);
+            SearchCropYieldsViewModel resultModel = SearchCropYieldsHelper(model);
 
-            // Search by farm
-            if (model.FarmID != null)
-            {
-                cropYieldsList = cropYieldsList.Where(cY => cY.FarmID == model.FarmID);
-            }
-
-            // Search by crop
-            if (model.CropID != null)
-            {
-                cropYieldsList = cropYieldsList.Where(cY => cY.CropID == model.CropID);
-            }
-
-            // Search by year
-            if (model.SearchProductionYear != null)
-            {
-                cropYieldsList = cropYieldsList.Where(cY => cY.ProductionYear == model.SearchProductionYear);
-            }
-
-            model.CropYieldList = cropYieldsList.ToList<CropYield>();
-
-            model.TotalCropYield = 0;
-
-            foreach (CropYield cropYield in model.CropYieldList)
-            {
-                model.TotalCropYield += cropYield.ProductionAmount;
-            };
-
-            return View(model);
+            return View(resultModel);
         }
-
+        /*
         [HttpGet]
         [Authorize(Roles = "Farmer")]
         public IActionResult AddCropYield()
         {
-            ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
-            ViewData["FarmList"] = new SelectList(database.Farms, "FarmID", "FarmName");
+            PopulateDropDownList();
 
             return View();
         }
@@ -136,13 +143,12 @@ namespace MVCWebAppKenney.Controllers
 
             return RedirectToAction("SearchCropYields");
         }
-        */
+        
         [HttpGet]
         [Authorize(Roles = "Farmer")]
         public IActionResult EditCropYield(int? cropYieldID)
         {
-            ViewData["CropList"] = new SelectList(database.Crops, "CropID", "CropName");
-            // ViewData["FarmList"] = new SelectList(database.Farms, "FarmID", "FarmName");
+            PopulateDropDownList();
 
             CropYield cropYield = database.CropYields.Find(cropYieldID);
 
@@ -164,7 +170,7 @@ namespace MVCWebAppKenney.Controllers
 
             return RedirectToAction("SearchCropYields");
         }
-        /*
+        
         [HttpGet]
         [Authorize(Roles = "Farmer")]
         public IActionResult DeleteCropYield(int? cropYieldID)

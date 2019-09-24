@@ -3,6 +3,8 @@ using Moq;
 using MVCWebAppKenney.Controllers;
 using MVCWebAppKenney.Models;
 using MVCWebAppKenney.Models.CropModel;
+using MVCWebAppKenney.Models.CropYieldModel;
+using MVCWebAppKenney.Models.FarmModel;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -15,13 +17,14 @@ namespace UnitTestProjectKenney
         [Fact]
         public void ShouldReturnViewForListAllCrops()
         {
+            Mock<ICropYieldRepo> mockCropYieldRepo = new Mock<ICropYieldRepo>();
             Mock<ICropRepo> mockCropRepo = new Mock<ICropRepo>();
+            Mock<IFarmRepo> mockFarmRepo = new Mock<IFarmRepo>();
+            CropsController cropsController = new CropsController(mockCropYieldRepo.Object, mockCropRepo.Object, mockFarmRepo.Object);
             List<Crop> mockCropList = PopulateCrops();
 
             mockCropRepo.Setup(m => m.ListAllCrops()).Returns(mockCropList);
 
-            // Create CropsController object
-            CropsController cropsController = new CropsController(mockCropRepo.Object);
 
             IActionResult result = cropsController.ListAllCrops();
 
@@ -46,7 +49,10 @@ namespace UnitTestProjectKenney
         {
             // Testing
             // 1. Arrange
+            Mock<ICropYieldRepo> mockCropYieldRepo = new Mock<ICropYieldRepo>();
             Mock<ICropRepo> mockCropRepo = new Mock<ICropRepo>();
+            Mock<IFarmRepo> mockFarmRepo = new Mock<IFarmRepo>();
+            
             List<Crop> mockCropList = PopulateCrops();
 
             int? classficationID = 2;
@@ -54,7 +60,7 @@ namespace UnitTestProjectKenney
             mockCropRepo.Setup(m => m.SearchCrops(It.IsAny<Int32?>())).Returns(mockCropList.FindAll(c => c.ClassificationID == classficationID));
 
             // 2. Act
-            CropsController cropsController = new CropsController(mockCropRepo.Object);
+            CropsController cropsController = new CropsController(mockCropYieldRepo.Object, mockCropRepo.Object, mockFarmRepo.Object);
 
             IActionResult result = cropsController.SearchCrops(classficationID);
 
@@ -71,7 +77,10 @@ namespace UnitTestProjectKenney
         public void ShouldAddNewCrop()
         {
             // 1. Arrange
+            Mock<ICropYieldRepo> mockCropYieldRepo = new Mock<ICropYieldRepo>();
             Mock<ICropRepo> mockCropRepo = new Mock<ICropRepo>();
+            Mock<IFarmRepo> mockFarmRepo = new Mock<IFarmRepo>();
+            
 
             Crop expectedCrop = new Crop
             {
@@ -86,7 +95,7 @@ namespace UnitTestProjectKenney
             mockCropRepo.Setup(m => m.AddCrop(It.IsAny<Crop>())).Returns(Task.CompletedTask).Callback<Crop>(m => addedCrop = m);
 
             // 2. Act
-            CropsController cropsController = new CropsController(mockCropRepo.Object);
+            CropsController cropsController = new CropsController(mockCropYieldRepo.Object, mockCropRepo.Object, mockFarmRepo.Object);
 
             var actualAddedCrop = cropsController.AddCrop(expectedCrop);
 

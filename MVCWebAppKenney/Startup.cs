@@ -15,6 +15,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MVCWebAppKenney.Models;
 using MVCWebAppKenney.Models.CropModel;
+using MVCWebAppKenney.Models.CropYieldModel;
+using MVCWebAppKenney.Models.FarmModel;
 
 namespace MVCWebAppKenney
 {
@@ -49,6 +51,8 @@ namespace MVCWebAppKenney
 
             // Connecting link for interfaces
             services.AddTransient<ICropRepo, CropRepo>();
+            services.AddTransient<IFarmRepo, FarmRepo>();
+            services.AddTransient<ICropYieldRepo, CropYieldRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
