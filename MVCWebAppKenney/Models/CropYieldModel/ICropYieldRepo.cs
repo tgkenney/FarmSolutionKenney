@@ -9,7 +9,6 @@ namespace MVCWebAppKenney.Models.CropYieldModel
     {
         // List used for searching
         IQueryable<CropYield> CropYieldList { get; }
-        // Try for Thursday
         Task AddCropYield(CropYield cropYield);
         Task EditCropYield(CropYield cropYield);
     }

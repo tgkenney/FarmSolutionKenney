@@ -69,6 +69,11 @@ namespace MVCWebAppKenney.Controllers
             return model;
         }
 
+        public async Task AddCropYieldHelper(CropYield cropYield)
+        {
+            await cropYieldRepoInterface.AddCropYield(cropYield);
+        }
+
         public IActionResult ListAllCrops()
         {
             List<Crop> cropList = cropRepoInterface.ListAllCrops();
@@ -125,6 +130,21 @@ namespace MVCWebAppKenney.Controllers
 
             return View(resultModel);
         }
+
+        [HttpGet]
+        public IActionResult AddCropYield()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddCropYield(CropYield cropYield)
+        {
+            await AddCropYieldHelper(cropYield);
+
+            return RedirectToAction("ListAllCrops");
+        }
+
         /*
         [HttpGet]
         [Authorize(Roles = "Farmer")]
