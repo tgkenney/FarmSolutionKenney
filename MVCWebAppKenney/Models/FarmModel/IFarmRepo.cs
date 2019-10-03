@@ -11,5 +11,6 @@ namespace MVCWebAppKenney.Models.FarmModel
         Task AddFarm(Farm farm);
         Task EditFarm(Farm farm);
         Task DeleteFarm(int farmID);
+        int FindFarmOfFarmer(string userID);
     }
 }

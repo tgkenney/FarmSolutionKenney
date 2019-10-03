@@ -15,7 +15,7 @@ namespace MVCWebAppKenney.ViewModels
 
         // Search result
         public List<CropYield> CropYieldList { get; set; }
-        public double? TotalCropYield { get; set; }
+        public List<GroupingViewModel> GroupingByFarmAndCrop { get; set; }
 
     }
 }

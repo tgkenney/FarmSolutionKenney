@@ -21,7 +21,11 @@
     </div>
     <div class="form-group">
         <label>Enter a year</label>
-        <input asp-for="SearchProductionYear" class="form-control" />
+        <select asp-for="SearchProductionYear" class="form-control">
+            <option value=2017>2017</option>
+            <option value=2018>2018</option>
+            <option value=2019>2019</option>
+        </select>
     </div>
 
     <button type="submit" class="btn btn-default">Search</button>
@@ -63,9 +67,27 @@
                         }
                     </tr>
                 }
+            </tbody>
+        </table>
+
+        <h4> Total Production for each Crop at each Farm </h4>
+        <table class="table table-bordered table-striped">
+            <thead>
                 <tr>
-                    <td><span style="font-weight:bold">Total Crop Yield: </span> @Model.TotalCropYield</td>
+                    <th> Farm Name </th>
+                    <th> Crop Name </th>
+                    <th> Total Production Amount </th>
                 </tr>
+            </thead>
+            <tbody>
+                @foreach (MVCWebAppKenney.ViewModels.GroupingViewModel eachGrouping in Model.GroupingByFarmAndCrop)
+                {
+                    <tr>
+                        <td> @eachGrouping.FarmName </td>
+                        <td> @eachGrouping.CropName </td>
+                        <td> @eachGrouping.ProductionAmount </td>
+                    </tr>
+                }
             </tbody>
         </table>
     }

@@ -35,14 +35,40 @@ namespace MVCWebAppKenney.Controllers
             ViewData["FarmList"] = new SelectList(farmRepoInterface.ListAllFarms(), "FarmID", "FarmName");
         }
 
-        public SearchCropYieldsViewModel SearchCropYieldsHelper(SearchCropYieldsViewModel model)
+        // If Farmer, return their FarmID
+        // After validation, returns the UserID as well
+        public int ValidateUser(out string userID) // Output parameter
+        {
+            userID = null;
+            int farmID = 0;
+
+            if (User.Identity.IsAuthenticated)
+            {
+                userID = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                if (User.IsInRole("Farmer"))
+                {
+                    farmID = farmRepoInterface.FindFarmOfFarmer(userID);
+                }
+            }
+
+            return farmID;
+        }
+
+        public SearchCropYieldsViewModel SearchCropYieldsHelper(SearchCropYieldsViewModel model, int farmID)
         {
             IQueryable<CropYield> cropYieldsList = cropYieldRepoInterface.CropYieldList;
 
-            // Search by farm
-            if (model.FarmID != null)
+            // Search by Farm
+            if (farmID != 0)
             {
                 cropYieldsList = cropYieldsList.Where(cY => cY.FarmID == model.FarmID);
+            }
+            if (farmID == 0)
+            {
+                if (model.FarmID != null)
+                {
+                    cropYieldsList = cropYieldsList.Where(cY => cY.FarmID == model.FarmID);
+                }
             }
 
             // Search by crop
@@ -59,14 +85,16 @@ namespace MVCWebAppKenney.Controllers
 
             model.CropYieldList = cropYieldsList.ToList<CropYield>();
 
-            model.TotalCropYield = 0;
-
-            foreach (CropYield cropYield in model.CropYieldList)
-            {
-                model.TotalCropYield += cropYield.ProductionAmount;
-            };
-
             return model;
+        }
+
+        public List<GroupingViewModel> Grouping(List<CropYield> cropYieldList)
+        {
+            List<GroupingViewModel> groupingList = new List<GroupingViewModel>();
+
+            groupingList = cropYieldList.GroupBy(c => new { c.CropID, c.FarmID }).Select(gvm => new GroupingViewModel{ CropName = gvm.First().Crop.CropName, FarmName = gvm.First().Farm.FarmName, ProductionAmount = gvm.Sum(g => g.ProductionAmount) }).ToList<GroupingViewModel>();
+
+            return groupingList;
         }
 
         public async Task AddCropYieldHelper(CropYield cropYield)
@@ -126,18 +154,35 @@ namespace MVCWebAppKenney.Controllers
         {
             PopulateDropDownList();
 
-            SearchCropYieldsViewModel resultModel = SearchCropYieldsHelper(model);
+            string userID = null;
+            int farmID = ValidateUser(out userID);
+            SearchCropYieldsViewModel resultModel = new SearchCropYieldsViewModel();
+
+            if (userID != null)
+            {
+                resultModel = SearchCropYieldsHelper(model, farmID);
+
+                resultModel.GroupingByFarmAndCrop = Grouping(resultModel.CropYieldList);
+            }
+
+            else
+            {
+                resultModel.CropYieldList = null;
+                resultModel.GroupingByFarmAndCrop = null;
+            }
 
             return View(resultModel);
         }
 
         [HttpGet]
+        [Authorize(Roles = "Farmer")]
         public IActionResult AddCropYield()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "Farmer")]
         public async Task<IActionResult> AddCropYield(CropYield cropYield)
         {
             await AddCropYieldHelper(cropYield);

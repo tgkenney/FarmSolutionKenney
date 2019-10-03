@@ -37,5 +37,12 @@ namespace MVCWebAppKenney.Models.FarmModel
 
             return farmList;
         }
+
+        public int FindFarmOfFarmer(string userID)
+        {
+            int farmID = database.Farmers.Find(userID).FarmID;
+
+            return farmID;
+        }
     }
 }
