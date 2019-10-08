@@ -84,6 +84,12 @@ namespace MVCWebAppKenney.Data
             if (!database.ApplicationUsers.Any())
             {
                 ApplicationUser applicationUser = new ApplicationUser("Test", "Analyst1", "TestAnalyst1@wvu.edu", "304-000-0001", "TestAnalyst1");
+                applicationUser.Id = "1";
+                await userManager.CreateAsync(applicationUser);
+                await userManager.AddToRoleAsync(applicationUser, roleAnalyst);
+
+                applicationUser = new ApplicationUser("Test", "Analyst2", "TestAnalyst2@wvu.edu", "304-000-0001", "TestAnalyst1");
+                applicationUser.Id = "2";
                 await userManager.CreateAsync(applicationUser);
                 await userManager.AddToRoleAsync(applicationUser, roleAnalyst);
 
@@ -447,7 +453,8 @@ namespace MVCWebAppKenney.Data
                     EndDate = new DateTime(2019, 2, 23),
                     ForecastAmount = 85,
                     ActualSales = 80,
-                    CropID = 1
+                    CropID = 1,
+                    Id = "1"
                 };
                 database.Forecasts.Add(forecast);
 
@@ -457,7 +464,8 @@ namespace MVCWebAppKenney.Data
                     EndDate = new DateTime(2019, 3, 2),
                     ForecastAmount = 100,
                     ActualSales = 90,
-                    CropID = 1
+                    CropID = 1,
+                    Id = "1"
                 };
                 database.Forecasts.Add(forecast);
 
@@ -467,7 +475,8 @@ namespace MVCWebAppKenney.Data
                     EndDate = new DateTime(2019, 3, 9),
                     ForecastAmount = 120,
                     ActualSales = null,
-                    CropID = 1
+                    CropID = 1,
+                    Id = "1"
                 };
                 database.Forecasts.Add(forecast);
 
@@ -477,7 +486,8 @@ namespace MVCWebAppKenney.Data
                     EndDate = new DateTime(2019, 2, 23),
                     ForecastAmount = 15,
                     ActualSales = 15,
-                    CropID = 17
+                    CropID = 17,
+                    Id = "1"
                 };
                 database.Forecasts.Add(forecast);
 
@@ -487,7 +497,8 @@ namespace MVCWebAppKenney.Data
                     EndDate = new DateTime(2019, 3, 2),
                     ForecastAmount = 20,
                     ActualSales = 20,
-                    CropID = 17
+                    CropID = 17,
+                    Id = "1"
                 };
                 database.Forecasts.Add(forecast);
 
@@ -497,7 +508,8 @@ namespace MVCWebAppKenney.Data
                     EndDate = new DateTime(2019, 3, 9),
                     ForecastAmount = 25,
                     ActualSales = null,
-                    CropID = 17
+                    CropID = 17,
+                    Id = "2"
                 };
                 database.Forecasts.Add(forecast);
 
@@ -507,7 +519,8 @@ namespace MVCWebAppKenney.Data
                     EndDate = new DateTime(2019, 2, 23),
                     ForecastAmount = 3,
                     ActualSales = 2,
-                    CropID = 16
+                    CropID = 16,
+                    Id = "2"
                 };
                 database.Forecasts.Add(forecast);
 
@@ -517,7 +530,8 @@ namespace MVCWebAppKenney.Data
                     EndDate = new DateTime(2019, 3, 2),
                     ForecastAmount = 4,
                     ActualSales = 3,
-                    CropID = 16
+                    CropID = 16,
+                    Id = "2"
                 };
                 database.Forecasts.Add(forecast);
 
@@ -527,7 +541,8 @@ namespace MVCWebAppKenney.Data
                     EndDate = new DateTime(2019, 3, 9),
                     ForecastAmount = 4,
                     ActualSales = null,
-                    CropID = 16
+                    CropID = 16,
+                    Id = "2"
                 };
                 database.Forecasts.Add(forecast);
 
@@ -537,7 +552,8 @@ namespace MVCWebAppKenney.Data
                     EndDate = new DateTime(2019, 2, 23),
                     ForecastAmount = 4,
                     ActualSales = 5,
-                    CropID = 13
+                    CropID = 13,
+                    Id = "2"
                 };
                 database.Forecasts.Add(forecast);
 
@@ -547,17 +563,8 @@ namespace MVCWebAppKenney.Data
                     EndDate = new DateTime(2019, 3, 2),
                     ForecastAmount = 4,
                     ActualSales = 3,
-                    CropID = 13
-                };
-                database.Forecasts.Add(forecast);
-
-                forecast = new Forecast
-                {
-                    StartDate = new DateTime(2019, 3, 3),
-                    EndDate = new DateTime(2019, 3, 9),
-                    ForecastAmount = 4,
-                    ActualSales = null,
-                    CropID = 13
+                    CropID = 13,
+                    Id = "2"
                 };
                 database.Forecasts.Add(forecast);
 

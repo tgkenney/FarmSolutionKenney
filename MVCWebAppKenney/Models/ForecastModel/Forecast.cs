@@ -22,5 +22,11 @@ namespace MVCWebAppKenney.Models
         public int CropID { get; set; }
         [ForeignKey("CropID")]
         public Crop Crop { get; set; }
+
+        // Link to Analyst
+        [Required(ErrorMessage = "An analyst is required")]
+        public string Id { get; set; }
+        [ForeignKey("Id")]
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }

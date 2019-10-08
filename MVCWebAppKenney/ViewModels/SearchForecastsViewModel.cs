@@ -12,6 +12,7 @@ namespace MVCWebAppKenney.ViewModels
         // User inputs for search
         // For optional input, make properties nullable
         public int? ClassificationID { get; set; }
+        public string Id { get; set; }
         public int? CropID { get; set; }
 
         [DataType(DataType.Date)]
