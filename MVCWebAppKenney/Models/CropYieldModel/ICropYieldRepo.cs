@@ -11,5 +11,6 @@ namespace MVCWebAppKenney.Models.CropYieldModel
         IQueryable<CropYield> CropYieldList { get; }
         Task AddCropYield(CropYield cropYield);
         Task EditCropYield(CropYield cropYield);
+        Task DeleteCropYield(int? cropYieldID);
     }
 }

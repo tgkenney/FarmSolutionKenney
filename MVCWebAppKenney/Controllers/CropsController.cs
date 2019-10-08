@@ -61,7 +61,7 @@ namespace MVCWebAppKenney.Controllers
             // Search by Farm
             if (farmID != 0)
             {
-                cropYieldsList = cropYieldsList.Where(cY => cY.FarmID == model.FarmID);
+                cropYieldsList = cropYieldsList.Where(cY => cY.FarmID == farmID);
             }
             if (farmID == 0)
             {
@@ -100,6 +100,11 @@ namespace MVCWebAppKenney.Controllers
         public async Task AddCropYieldHelper(CropYield cropYield)
         {
             await cropYieldRepoInterface.AddCropYield(cropYield);
+        }
+
+        public async Task DeleteCropYieldHelper(int? cropYieldID)
+        {
+            await cropYieldRepoInterface.DeleteCropYield(cropYieldID);
         }
 
         public IActionResult ListAllCrops()
@@ -188,6 +193,15 @@ namespace MVCWebAppKenney.Controllers
             await AddCropYieldHelper(cropYield);
 
             return RedirectToAction("ListAllCrops");
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Farmer")]
+        public async Task<IActionResult> DeleteCropYield(int? cropYieldID)
+        {
+            await DeleteCropYieldHelper(cropYieldID);
+
+            return RedirectToAction("SearchCropYields");
         }
 
         /*

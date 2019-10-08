@@ -40,5 +40,13 @@ namespace MVCWebAppKenney.Models.CropYieldModel
 
             return database.SaveChangesAsync();
         }
+        
+        public Task DeleteCropYield(int? cropYieldID)
+        {
+            CropYield cropYield = database.CropYields.Find(cropYieldID);
+            database.CropYields.Remove(cropYield);
+
+            return database.SaveChangesAsync();
+        }
     }
 }

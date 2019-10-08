@@ -42,7 +42,7 @@ namespace UnitTestProjectKenney
 
             // 2. Act
             SearchCropYieldsViewModel model = new SearchCropYieldsViewModel();
-            SearchCropYieldsViewModel result = cropsController.SearchCropYieldsHelper(model);
+            SearchCropYieldsViewModel result = cropsController.SearchCropYieldsHelper(model, 0);
 
             // 3. Assert
             Assert.Equal(4, result.CropYieldList.Count);
@@ -62,7 +62,7 @@ namespace UnitTestProjectKenney
             // 2. Act
             SearchCropYieldsViewModel model = new SearchCropYieldsViewModel();
             model.CropID = 1;
-            SearchCropYieldsViewModel result = cropsController.SearchCropYieldsHelper(model);
+            SearchCropYieldsViewModel result = cropsController.SearchCropYieldsHelper(model, 0);
 
             List<CropYield> expectedSearchResult = mockCropYieldList.Where(m => m.CropID == 1).ToList<CropYield>();
 
@@ -84,7 +84,7 @@ namespace UnitTestProjectKenney
             // 2. Act
             SearchCropYieldsViewModel model = new SearchCropYieldsViewModel();
             model.FarmID = 1;
-            SearchCropYieldsViewModel result = cropsController.SearchCropYieldsHelper(model);
+            SearchCropYieldsViewModel result = cropsController.SearchCropYieldsHelper(model, 0);
 
             List<CropYield> expectedSearchResult = mockCropYieldList.Where(m => m.FarmID == 1).ToList<CropYield>();
 
@@ -106,7 +106,7 @@ namespace UnitTestProjectKenney
             // 2. Act
             SearchCropYieldsViewModel model = new SearchCropYieldsViewModel();
             model.SearchProductionYear = 2019;
-            SearchCropYieldsViewModel result = cropsController.SearchCropYieldsHelper(model);
+            SearchCropYieldsViewModel result = cropsController.SearchCropYieldsHelper(model, 0);
 
             List<CropYield> expectedSearchResult = mockCropYieldList.Where(m => m.ProductionYear == 2019).ToList<CropYield>();
 
@@ -131,7 +131,7 @@ namespace UnitTestProjectKenney
 
             CropYield addedCropYield = null;
 
-            mockCropRepo.Setup(m => m.AddCrop(It.IsAny<Crop>())).Returns(Task.CompletedTask).Callback<CropYield>(m => addedCropYield = m);
+            mockCropYieldRepo.Setup(m => m.AddCropYield(It.IsAny<CropYield>())).Returns(Task.CompletedTask).Callback<CropYield>(m => addedCropYield = m);
 
             // 2. Act
 
@@ -140,6 +140,22 @@ namespace UnitTestProjectKenney
             // 3. Assert
             Assert.Equal(expectedCropYield.CropYieldID, addedCropYield.CropYieldID);
             Assert.Equal(expectedCropYield, addedCropYield);
+        }
+
+        [Fact]
+        public async Task ShouldDeleteCropYield()
+        {
+            // 1. Arrange
+            
+            mockCropYieldRepo.Setup(repo => repo.DeleteCropYield(It.IsAny<Nullable<Int32>>())).Returns(Task.CompletedTask);
+            int? cropYieldID = 1;
+
+            // 2. Act
+            
+            await cropsController.DeleteCropYieldHelper(cropYieldID);
+
+            // 3. Assert
+            mockCropYieldRepo.Verify(m => m.DeleteCropYield(It.IsAny<Nullable<Int32>>()), Times.Once);
         }
 
         public IQueryable<CropYield> PopulateCropYields()
