@@ -19,6 +19,7 @@ using MVCWebAppKenney.Models.CropYieldModel;
 using MVCWebAppKenney.Models.FarmModel;
 using MVCWebAppKenney.Models.ApplicationUserModel;
 using MVCWebAppKenney.Models.ForecastModel;
+using MVCWebAppKenney.Models.Analyst;
 
 namespace MVCWebAppKenney
 {
@@ -57,6 +58,7 @@ namespace MVCWebAppKenney
             services.AddTransient<ICropYieldRepo, CropYieldRepo>();
             services.AddTransient<IApplicationUserRepo, ApplicationUserRepo>();
             services.AddTransient<IForecastRepo, ForecastRepo>();
+            services.AddTransient<IAnalystRepo, AnalystRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

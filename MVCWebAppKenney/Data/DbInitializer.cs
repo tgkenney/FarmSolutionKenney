@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using MVCWebAppKenney.Models;
+using MVCWebAppKenney.Models.Analyst;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,12 +84,12 @@ namespace MVCWebAppKenney.Data
             // Users
             if (!database.ApplicationUsers.Any())
             {
-                ApplicationUser applicationUser = new ApplicationUser("Test", "Analyst1", "TestAnalyst1@wvu.edu", "304-000-0001", "TestAnalyst1");
+                ApplicationUser applicationUser = new Analyst("Test", "Analyst1", "TestAnalyst1@wvu.edu", "304-000-0001", "TestAnalyst1");
                 applicationUser.Id = "1";
                 await userManager.CreateAsync(applicationUser);
                 await userManager.AddToRoleAsync(applicationUser, roleAnalyst);
 
-                applicationUser = new ApplicationUser("Test", "Analyst2", "TestAnalyst2@wvu.edu", "304-000-0001", "TestAnalyst1");
+                applicationUser = new Analyst("Test", "Analyst2", "TestAnalyst2@wvu.edu", "304-000-0001", "TestAnalyst1");
                 applicationUser.Id = "2";
                 await userManager.CreateAsync(applicationUser);
                 await userManager.AddToRoleAsync(applicationUser, roleAnalyst);

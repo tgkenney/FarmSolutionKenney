@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MVCWebAppKenney.Models;
+using MVCWebAppKenney.Models.Analyst;
 using MVCWebAppKenney.Models.ApplicationUserModel;
 using MVCWebAppKenney.Models.CropModel;
 using MVCWebAppKenney.Models.CropYieldModel;
@@ -19,18 +20,20 @@ namespace MVCWebAppKenney.Controllers
         private IForecastRepo forecastRepoInterface;
         private ICropRepo cropRepoInterface;
         private IApplicationUserRepo applicationUserRepoInterface;
+        private IAnalystRepo analystRepoInterface;
 
-        public AnalystController(IApplicationUserRepo userRepo, IForecastRepo forecastRepo, ICropRepo cropRepo)
+        public AnalystController(IApplicationUserRepo userRepo, IForecastRepo forecastRepo, ICropRepo cropRepo, IAnalystRepo analystRepo)
         {
             this.forecastRepoInterface = forecastRepo;
             this.cropRepoInterface = cropRepo;
             this.applicationUserRepoInterface = userRepo;
+            this.analystRepoInterface = analystRepo;
         }
 
         public void PopulateDropDownList()
         {
             ViewData["CropList"] = new SelectList(cropRepoInterface.ListAllCrops(), "CropID", "CropName");
-            ViewData["UserList"] = new SelectList(applicationUserRepoInterface.ListAllUsers(), "Id", "LastName");
+            ViewData["UserList"] = new SelectList(analystRepoInterface.ListAllAnalysts(), "Id", "LastName");
         }
 
         public SearchForecastsViewModel SearchForecastsHelper(SearchForecastsViewModel model)

@@ -2,17 +2,15 @@
 using Moq;
 using MVCWebAppKenney.Controllers;
 using MVCWebAppKenney.Models;
+using MVCWebAppKenney.Models.Analyst;
 using MVCWebAppKenney.Models.ApplicationUserModel;
 using MVCWebAppKenney.Models.CropModel;
-using MVCWebAppKenney.Models.CropYieldModel;
-using MVCWebAppKenney.Models.FarmModel;
 using MVCWebAppKenney.Models.ForecastModel;
 using MVCWebAppKenney.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using Xunit;
 
 namespace UnitTestProjectKenney
@@ -22,6 +20,7 @@ namespace UnitTestProjectKenney
         private Mock<IForecastRepo> mockForecastRepo;
         private Mock<IApplicationUserRepo> mockUserRepo;
         private Mock<ICropRepo> mockCropRepo;
+        private Mock<IAnalystRepo> mockAnalystRepo;
         private AnalystController analystController;
 
         public ForecastUnitTest()
@@ -29,20 +28,24 @@ namespace UnitTestProjectKenney
             mockForecastRepo = new Mock<IForecastRepo>();
             mockCropRepo = new Mock<ICropRepo>();
             mockUserRepo = new Mock<IApplicationUserRepo>();
-            analystController = new AnalystController(mockUserRepo.Object, mockForecastRepo.Object, mockCropRepo.Object);
+            mockAnalystRepo = new Mock<IAnalystRepo>();
+            analystController = new AnalystController(mockUserRepo.Object, mockForecastRepo.Object, mockCropRepo.Object, mockAnalystRepo.Object);
         }
 
         [Fact]
-        public void ShouldSearchForecasts()
+        public void ShouldSearchForecastsWithoutInputs()
         {
+            // 1. Arrange
             IQueryable<Forecast> mockForecastList = PopulateForecasts();
 
             mockForecastRepo.Setup(m => m.ForecastList).Returns(mockForecastList);
 
+            // 2. Act
             SearchForecastsViewModel model = new SearchForecastsViewModel();
             SearchForecastsViewModel result = analystController.SearchForecastsHelper(model);
 
-            Assert.Equal(11, result.ForecastList.Count);
+            // 3. Assert
+            Assert.Equal(12, result.ForecastList.Count);
             Assert.Equal(mockForecastList.ToList<Forecast>(), model.ForecastList);
         }
 
