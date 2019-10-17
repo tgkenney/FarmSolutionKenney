@@ -45,8 +45,27 @@ namespace UnitTestProjectKenney
             SearchForecastsViewModel result = analystController.SearchForecastsHelper(model);
 
             // 3. Assert
-            Assert.Equal(12, result.ForecastList.Count);
+            Assert.Equal(11, result.ForecastList.Count);
             Assert.Equal(mockForecastList.ToList<Forecast>(), model.ForecastList);
+        }
+
+        [Fact]
+        public void ShouldSearchForecastsWithAnalystInput()
+        {
+            // 1. Arrange
+            IQueryable<Forecast> mockForecastList = PopulateForecasts();
+            mockForecastRepo.Setup(m => m.ForecastList).Returns(mockForecastList);
+
+            // 2. Act
+            SearchForecastsViewModel model = new SearchForecastsViewModel();
+            model.Id = "1";
+            SearchForecastsViewModel result = analystController.SearchForecastsHelper(model);
+
+            List<Forecast> expectedSearchResult = mockForecastList.Where(m => m.Id == "1").ToList<Forecast>();
+
+            // 3. Assert
+            Assert.Equal(5, result.ForecastList.Count);
+            Assert.Equal(expectedSearchResult, model.ForecastList);
         }
 
         public IQueryable<Forecast> PopulateForecasts()
@@ -105,17 +124,6 @@ namespace UnitTestProjectKenney
                 ActualSales = 80,
                 CropID = 1,
                 Id = "1"
-            };
-            forecastList.Add(forecast);
-
-            forecast = new Forecast
-            {
-                StartDate = new DateTime(2019, 2, 17),
-                EndDate = new DateTime(2019, 2, 23),
-                ForecastAmount = 85,
-                ActualSales = 80,
-                CropID = 1,
-                Id = "2"
             };
             forecastList.Add(forecast);
 

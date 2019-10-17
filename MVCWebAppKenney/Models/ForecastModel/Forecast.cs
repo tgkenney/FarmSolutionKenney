@@ -27,6 +27,6 @@ namespace MVCWebAppKenney.Models
         [Required(ErrorMessage = "An analyst is required")]
         public string Id { get; set; }
         [ForeignKey("Id")]
-        public ApplicationUser ApplicationUser { get; set; }
+        public Analyst.Analyst Analyst { get; set; }
     }
 }

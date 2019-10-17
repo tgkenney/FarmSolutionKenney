@@ -64,7 +64,7 @@
                 @foreach (Forecast eachForecast in Model.ForecastList)
                 {
                     <tr>
-                        <td>@eachForecast.ApplicationUser.LastName</td>
+                        <td>@eachForecast.Analyst.LastName</td>
                         <td>@eachForecast.Crop.CropName</td>
                         <td>@eachForecast.Crop.Classification.ClassificationName</td>
                         <td>@eachForecast.StartDate.ToShortDateString()</td>

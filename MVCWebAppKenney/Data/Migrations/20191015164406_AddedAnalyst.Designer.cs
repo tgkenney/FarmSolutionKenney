@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCWebAppKenney.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191015154514_AddedAnalyst")]
+    [Migration("20191015164406_AddedAnalyst")]
     partial class AddedAnalyst
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -120,8 +120,6 @@ namespace MVCWebAppKenney.Data.Migrations
 
                     b.Property<double?>("ActualSales");
 
-                    b.Property<string>("AnalystId");
-
                     b.Property<int>("CropID");
 
                     b.Property<DateTime>("EndDate");
@@ -134,8 +132,6 @@ namespace MVCWebAppKenney.Data.Migrations
                     b.Property<DateTime>("StartDate");
 
                     b.HasKey("ForecastID");
-
-                    b.HasIndex("AnalystId");
 
                     b.HasIndex("CropID");
 
@@ -379,17 +375,13 @@ namespace MVCWebAppKenney.Data.Migrations
 
             modelBuilder.Entity("MVCWebAppKenney.Models.Forecast", b =>
                 {
-                    b.HasOne("MVCWebAppKenney.Models.Analyst.Analyst")
-                        .WithMany("ForecastsByAnalyst")
-                        .HasForeignKey("AnalystId");
-
                     b.HasOne("MVCWebAppKenney.Models.Crop", "Crop")
                         .WithMany("Forecasts")
                         .HasForeignKey("CropID")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MVCWebAppKenney.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
+                    b.HasOne("MVCWebAppKenney.Models.Analyst.Analyst", "Analyst")
+                        .WithMany("ForecastsByAnalyst")
                         .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

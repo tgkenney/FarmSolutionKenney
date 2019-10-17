@@ -47,7 +47,7 @@ namespace MVCWebAppKenney.Controllers
 
             if (model.Id != null)
             {
-                forecastList = forecastList.Where(f => f.ApplicationUser.Id == model.Id);
+                forecastList = forecastList.Where(f => f.Id == model.Id);
             }
 
             // Do it for Crop as well
