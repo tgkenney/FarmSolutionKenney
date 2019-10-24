@@ -4,14 +4,16 @@ using MVCWebAppKenney.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MVCWebAppKenney.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191008153642_ForecastAnalystLink")]
+    partial class ForecastAnalystLink
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -319,13 +321,6 @@ namespace MVCWebAppKenney.Data.Migrations
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
-            modelBuilder.Entity("MVCWebAppKenney.Models.Analyst.Analyst", b =>
-                {
-                    b.HasBaseType("MVCWebAppKenney.Models.ApplicationUser");
-
-                    b.HasDiscriminator().HasValue("Analyst");
-                });
-
             modelBuilder.Entity("MVCWebAppKenney.Models.Farmer", b =>
                 {
                     b.HasBaseType("MVCWebAppKenney.Models.ApplicationUser");
@@ -378,8 +373,8 @@ namespace MVCWebAppKenney.Data.Migrations
                         .HasForeignKey("CropID")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MVCWebAppKenney.Models.Analyst.Analyst", "Analyst")
-                        .WithMany("ForecastsByAnalyst")
+                    b.HasOne("MVCWebAppKenney.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
                         .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

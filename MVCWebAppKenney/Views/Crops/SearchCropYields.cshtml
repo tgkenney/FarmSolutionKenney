@@ -1,0 +1,105 @@
+﻿@model MVCWebAppKenney.ViewModels.SearchCropYieldsViewModel
+
+@{
+    ViewData["Title"] = "Search Crop Yields";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="SearchCropYields" method="post">
+    <div class="form-group">
+        <label>Choose a Crop</label>
+        <select asp-for="CropID" class="form-control" asp-items="ViewBag.CropList">
+            <option value=null>None</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Choose a Farm</label>
+        <select asp-for="FarmID" class="form-control" asp-items="ViewBag.FarmList">
+            <option value=null>None</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Enter a year</label>
+        <select asp-for="SearchProductionYear" class="form-control">
+            <option value=2017>2017</option>
+            <option value=2018>2018</option>
+            <option value=2019>2019</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-default">Search</button>
+
+</form>
+
+@if (Model.CropYieldList != null)
+{
+    @if(Model.CropYieldList.Any())
+    {
+        <label>Search results</label>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Crop Name</th>
+                    <th>Farm Name</th>
+                    <th>Production Year</th>
+                    <th>Production Amount</th>
+                    @if (User.IsInRole("Farmer"))
+                    {
+                        <th>Actions</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (CropYield eachCropYield in Model.CropYieldList)
+                {
+                    <tr>
+                        <td>@eachCropYield.Crop.CropName</td>
+                        <td>@eachCropYield.Farm.FarmName</td>
+                        <td>@eachCropYield.ProductionYear</td>
+                        <td>@eachCropYield.ProductionAmount</td>
+                        @if (User.IsInRole("Farmer"))
+                        {
+                            <td>
+                                <a class="btn btn-info" asp-controller="Crops" asp-action="EditCropYield" asp-route-cropYieldID="@eachCropYield.CropYieldID">Edit</a>
+                                <a class="btn btn-danger" asp-controller="Crops" asp-action="DeleteCropYield" asp-route-cropYieldID="@eachCropYield.CropYieldID"
+                                   onclick="return confirm( 'Are you sure you want to delete crop yield: @eachCropYield.Crop.CropName at @eachCropYield.Farm.FarmName')">
+                                    Delete
+                                </a>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <h4> Total Production for each Crop at each Farm </h4>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th> Farm Name </th>
+                    <th> Crop Name </th>
+                    <th> Total Production Amount </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (MVCWebAppKenney.ViewModels.GroupingViewModel eachGrouping in Model.GroupingByFarmAndCrop)
+                {
+                    <tr>
+                        <td> @eachGrouping.FarmName </td>
+                        <td> @eachGrouping.CropName </td>
+                        <td> @eachGrouping.ProductionAmount </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h4>No search results found</h4>
+    }
+    if (User.IsInRole("Farmer"))
+    {
+        <a class="btn btn-primary" asp-action="AddCropYield">Add new crop yield</a>
+    }
+}

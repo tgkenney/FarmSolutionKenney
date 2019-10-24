@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MVCWebAppKenney.Models;
+using MVCWebAppKenney.Models.Analyst;
 
 namespace MVCWebAppKenney.Data
 {
@@ -21,5 +22,8 @@ namespace MVCWebAppKenney.Data
         public DbSet<CanProduce> CanProduce { get; set; }
         public DbSet<Forecast> Forecasts { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<CropYield> CropYields { get; set; }
+        public DbSet<Farmer> Farmers { get; set; }
+        public DbSet<Analyst> Analysts { get; set; }
     } // end class
 } // end namespace

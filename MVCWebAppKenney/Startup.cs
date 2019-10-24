@@ -14,6 +14,12 @@ using MVCWebAppKenney.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MVCWebAppKenney.Models;
+using MVCWebAppKenney.Models.CropModel;
+using MVCWebAppKenney.Models.CropYieldModel;
+using MVCWebAppKenney.Models.FarmModel;
+using MVCWebAppKenney.Models.ApplicationUserModel;
+using MVCWebAppKenney.Models.ForecastModel;
+using MVCWebAppKenney.Models.Analyst;
 
 namespace MVCWebAppKenney
 {
@@ -45,6 +51,14 @@ namespace MVCWebAppKenney
                 .AddEntityFrameworkStores<ApplicationDbContext>(); // Changed IdentityUser to ApplicationUser, and added AddRoles
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            // Connecting link for interfaces
+            services.AddTransient<ICropRepo, CropRepo>();
+            services.AddTransient<IFarmRepo, FarmRepo>();
+            services.AddTransient<ICropYieldRepo, CropYieldRepo>();
+            services.AddTransient<IApplicationUserRepo, ApplicationUserRepo>();
+            services.AddTransient<IForecastRepo, ForecastRepo>();
+            services.AddTransient<IAnalystRepo, AnalystRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

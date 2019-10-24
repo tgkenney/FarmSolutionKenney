@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using MVCWebAppKenney.Models;
+using MVCWebAppKenney.Models.Analyst;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,47 @@ namespace MVCWebAppKenney.Data
             UserManager<ApplicationUser> userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
             RoleManager<IdentityRole> roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
+            // Farms
+            if (!database.Farms.Any())
+            {
+
+                Farm farm = new Farm
+                {
+                    FarmName = "Grow OV",
+                    FarmAddress = "1006 Grandview St, Wheeling, WV 26003",
+                    FarmSize = 5500
+                };
+                database.Farms.Add(farm);
+
+                farm = new Farm
+                {
+                    FarmName = "Bluebird",
+                    FarmAddress = "190 Alamo Rd SE, Carrollton, OH 44615",
+                    FarmSize = 3000
+                };
+                database.Farms.Add(farm);
+
+                farm = new Farm
+                {
+                    FarmName = "Family Roots",
+                    FarmAddress = "245 Hervey Ln, Wellsburg, WV 26070",
+                    FarmSize = 1000
+                };
+                database.Farms.Add(farm);
+
+                database.Farms.Add(farm);
+
+                farm = new Farm
+                {
+                    FarmName = "Oak Hill",
+                    FarmAddress = "37 Old Trails Rd. Avella, PA 15312",
+                    FarmSize = 1500
+                };
+                database.Farms.Add(farm);
+
+                database.SaveChanges();
+            }
+
             // Role strings
             string roleAnalyst = "Analyst";
             string roleFarmer = "Farmer";
@@ -42,15 +84,25 @@ namespace MVCWebAppKenney.Data
             // Users
             if (!database.ApplicationUsers.Any())
             {
-                ApplicationUser applicationUser = new ApplicationUser("Test", "Analyst1", "TestAnalyst1@wvu.edu", "304-000-0001", "TestAnalyst1");
+                ApplicationUser applicationUser = new Analyst("Test", "Analyst1", "TestAnalyst1@wvu.edu", "304-000-0001", "TestAnalyst1");
+                applicationUser.Id = "1";
                 await userManager.CreateAsync(applicationUser);
                 await userManager.AddToRoleAsync(applicationUser, roleAnalyst);
 
-                applicationUser = new ApplicationUser("Test", "Farmer1", "TestFarmer1@wvu.edu", "304-000-0002", "TestFarmer1");
+                applicationUser = new Analyst("Test", "Analyst2", "TestAnalyst2@wvu.edu", "304-000-0001", "TestAnalyst1");
+                applicationUser.Id = "2";
+                await userManager.CreateAsync(applicationUser);
+                await userManager.AddToRoleAsync(applicationUser, roleAnalyst);
+
+                applicationUser = new Farmer("Test", "Farmer1", "TestFarmer1@wvu.edu", "304-000-0002", "TestFarmer1", 1);
                 await userManager.CreateAsync(applicationUser);
                 await userManager.AddToRoleAsync(applicationUser, roleFarmer);
 
-                database.SaveChanges();
+                applicationUser = new Farmer("Test", "Farmer2", "TestFarmer2@wvu.edu", "304-000-0003", "TestFarmer2", 2);
+                await userManager.CreateAsync(applicationUser);
+                await userManager.AddToRoleAsync(applicationUser, roleFarmer);
+
+                // database.SaveChanges();
             }
             // Classifications
             if (!database.Classifications.Any())
@@ -233,46 +285,6 @@ namespace MVCWebAppKenney.Data
 
                 database.SaveChanges();
             }
-            // Farms
-            if (!database.Farms.Any())
-            {
-                
-                Farm farm = new Farm
-                {
-                    FarmName = "Grow OV",
-                    FarmAddress = "1006 Grandview St, Wheeling, WV 26003",
-                    FarmSize = 5500
-                };
-                database.Farms.Add(farm);
-
-                farm = new Farm
-                {
-                    FarmName = "Bluebird",
-                    FarmAddress = "190 Alamo Rd SE, Carrollton, OH 44615",
-                    FarmSize = 3000
-                };
-                database.Farms.Add(farm);
-
-                farm = new Farm
-                {
-                    FarmName = "Family Roots",
-                    FarmAddress = "245 Hervey Ln, Wellsburg, WV 26070",
-                    FarmSize = 1000
-                };
-                database.Farms.Add(farm);
-
-                database.Farms.Add(farm);
-
-                farm = new Farm
-                {
-                    FarmName = "Oak Hill",
-                    FarmAddress = "37 Old Trails Rd. Avella, PA 15312",
-                    FarmSize = 1500
-                };
-                database.Farms.Add(farm);
-                
-                database.SaveChanges();
-            }
             // CanProduce
             if (!database.CanProduce.Any())
             {
@@ -442,7 +454,8 @@ namespace MVCWebAppKenney.Data
                     EndDate = new DateTime(2019, 2, 23),
                     ForecastAmount = 85,
                     ActualSales = 80,
-                    CropID = 1
+                    CropID = 1,
+                    Id = "1"
                 };
                 database.Forecasts.Add(forecast);
 
@@ -452,7 +465,8 @@ namespace MVCWebAppKenney.Data
                     EndDate = new DateTime(2019, 3, 2),
                     ForecastAmount = 100,
                     ActualSales = 90,
-                    CropID = 1
+                    CropID = 1,
+                    Id = "1"
                 };
                 database.Forecasts.Add(forecast);
 
@@ -462,7 +476,8 @@ namespace MVCWebAppKenney.Data
                     EndDate = new DateTime(2019, 3, 9),
                     ForecastAmount = 120,
                     ActualSales = null,
-                    CropID = 1
+                    CropID = 1,
+                    Id = "1"
                 };
                 database.Forecasts.Add(forecast);
 
@@ -472,7 +487,8 @@ namespace MVCWebAppKenney.Data
                     EndDate = new DateTime(2019, 2, 23),
                     ForecastAmount = 15,
                     ActualSales = 15,
-                    CropID = 17
+                    CropID = 17,
+                    Id = "1"
                 };
                 database.Forecasts.Add(forecast);
 
@@ -482,7 +498,8 @@ namespace MVCWebAppKenney.Data
                     EndDate = new DateTime(2019, 3, 2),
                     ForecastAmount = 20,
                     ActualSales = 20,
-                    CropID = 17
+                    CropID = 17,
+                    Id = "1"
                 };
                 database.Forecasts.Add(forecast);
 
@@ -492,7 +509,8 @@ namespace MVCWebAppKenney.Data
                     EndDate = new DateTime(2019, 3, 9),
                     ForecastAmount = 25,
                     ActualSales = null,
-                    CropID = 17
+                    CropID = 17,
+                    Id = "2"
                 };
                 database.Forecasts.Add(forecast);
 
@@ -502,7 +520,8 @@ namespace MVCWebAppKenney.Data
                     EndDate = new DateTime(2019, 2, 23),
                     ForecastAmount = 3,
                     ActualSales = 2,
-                    CropID = 16
+                    CropID = 16,
+                    Id = "2"
                 };
                 database.Forecasts.Add(forecast);
 
@@ -512,7 +531,8 @@ namespace MVCWebAppKenney.Data
                     EndDate = new DateTime(2019, 3, 2),
                     ForecastAmount = 4,
                     ActualSales = 3,
-                    CropID = 16
+                    CropID = 16,
+                    Id = "2"
                 };
                 database.Forecasts.Add(forecast);
 
@@ -522,7 +542,8 @@ namespace MVCWebAppKenney.Data
                     EndDate = new DateTime(2019, 3, 9),
                     ForecastAmount = 4,
                     ActualSales = null,
-                    CropID = 16
+                    CropID = 16,
+                    Id = "2"
                 };
                 database.Forecasts.Add(forecast);
 
@@ -532,7 +553,8 @@ namespace MVCWebAppKenney.Data
                     EndDate = new DateTime(2019, 2, 23),
                     ForecastAmount = 4,
                     ActualSales = 5,
-                    CropID = 13
+                    CropID = 13,
+                    Id = "2"
                 };
                 database.Forecasts.Add(forecast);
 
@@ -542,19 +564,33 @@ namespace MVCWebAppKenney.Data
                     EndDate = new DateTime(2019, 3, 2),
                     ForecastAmount = 4,
                     ActualSales = 3,
-                    CropID = 13
+                    CropID = 13,
+                    Id = "2"
                 };
                 database.Forecasts.Add(forecast);
 
-                forecast = new Forecast
+                database.SaveChanges();
+            }
+            // CropYield
+            if (!database.CropYields.Any())
+            {
+                CropYield cropYield = new CropYield
                 {
-                    StartDate = new DateTime(2019, 3, 3),
-                    EndDate = new DateTime(2019, 3, 9),
-                    ForecastAmount = 4,
-                    ActualSales = null,
-                    CropID = 13
+                    ProductionAmount = 400,
+                    ProductionYear = 2019,
+                    CropID = 1,
+                    FarmID = 1
                 };
-                database.Forecasts.Add(forecast);
+                database.CropYields.Add(cropYield);
+
+                cropYield = new CropYield
+                {
+                    ProductionAmount = 500,
+                    ProductionYear = 2019,
+                    CropID = 2,
+                    FarmID = 2
+                };
+                database.CropYields.Add(cropYield);
 
                 database.SaveChanges();
             }

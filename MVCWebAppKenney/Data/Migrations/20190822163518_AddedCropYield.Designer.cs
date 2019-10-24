@@ -4,14 +4,16 @@ using MVCWebAppKenney.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MVCWebAppKenney.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190822163518_AddedCropYield")]
+    partial class AddedCropYield
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -124,16 +126,11 @@ namespace MVCWebAppKenney.Data.Migrations
 
                     b.Property<double>("ForecastAmount");
 
-                    b.Property<string>("Id")
-                        .IsRequired();
-
                     b.Property<DateTime>("StartDate");
 
                     b.HasKey("ForecastID");
 
                     b.HasIndex("CropID");
-
-                    b.HasIndex("Id");
 
                     b.ToTable("Forecasts");
                 });
@@ -319,24 +316,6 @@ namespace MVCWebAppKenney.Data.Migrations
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
-            modelBuilder.Entity("MVCWebAppKenney.Models.Analyst.Analyst", b =>
-                {
-                    b.HasBaseType("MVCWebAppKenney.Models.ApplicationUser");
-
-                    b.HasDiscriminator().HasValue("Analyst");
-                });
-
-            modelBuilder.Entity("MVCWebAppKenney.Models.Farmer", b =>
-                {
-                    b.HasBaseType("MVCWebAppKenney.Models.ApplicationUser");
-
-                    b.Property<int>("FarmID");
-
-                    b.HasIndex("FarmID");
-
-                    b.HasDiscriminator().HasValue("Farmer");
-                });
-
             modelBuilder.Entity("MVCWebAppKenney.Models.CanProduce", b =>
                 {
                     b.HasOne("MVCWebAppKenney.Models.Crop", "Crop")
@@ -376,11 +355,6 @@ namespace MVCWebAppKenney.Data.Migrations
                     b.HasOne("MVCWebAppKenney.Models.Crop", "Crop")
                         .WithMany("Forecasts")
                         .HasForeignKey("CropID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MVCWebAppKenney.Models.Analyst.Analyst", "Analyst")
-                        .WithMany("ForecastsByAnalyst")
-                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -426,14 +400,6 @@ namespace MVCWebAppKenney.Data.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MVCWebAppKenney.Models.Farmer", b =>
-                {
-                    b.HasOne("MVCWebAppKenney.Models.Farm", "Farm")
-                        .WithMany("FarmersThatWorkHere")
-                        .HasForeignKey("FarmID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
