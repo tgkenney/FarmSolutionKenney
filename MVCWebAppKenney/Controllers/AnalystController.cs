@@ -53,7 +53,7 @@ namespace MVCWebAppKenney.Controllers
             // Do it for Crop as well
             if (model.CropID != null)
             {
-                forecastList = forecastList.Where(f => f.Crop.CropID == model.CropID);
+                forecastList = forecastList.Where(f => f.CropID == model.CropID);
             }
 
             // Start and End date searching

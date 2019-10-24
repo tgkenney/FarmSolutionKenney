@@ -62,7 +62,10 @@
                         {
                             <td>
                                 <a class="btn btn-info" asp-controller="Crops" asp-action="EditCropYield" asp-route-cropYieldID="@eachCropYield.CropYieldID">Edit</a>
-                                <a class="btn btn-danger" asp-controller="Crops" asp-action="DeleteCropYield" asp-route-cropYieldID="@eachCropYield.CropYieldID">Delete</a>
+                                <a class="btn btn-danger" asp-controller="Crops" asp-action="DeleteCropYield" asp-route-cropYieldID="@eachCropYield.CropYieldID"
+                                   onclick="return confirm( 'Are you sure you want to delete crop yield: @eachCropYield.Crop.CropName at @eachCropYield.Farm.FarmName')">
+                                    Delete
+                                </a>
                             </td>
                         }
                     </tr>
