@@ -47,8 +47,8 @@ namespace MVCWebAppKenney.Services
                 {
                     client.Connect(SmtpServer, SmtpPortNumber, false);
                     client.Authenticate(
-                        "tgkenney@mix.wvu.edu",
-                        ""
+                        "tgkenneymist452@gmail.com",
+                        "L2aXLNePE2jZCLBi4kYnutnK"
                         );
                     await client.SendAsync(mimeMessage);
                     await client.DisconnectAsync(true);
