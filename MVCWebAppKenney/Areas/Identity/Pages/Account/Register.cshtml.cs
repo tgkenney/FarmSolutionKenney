@@ -8,28 +8,34 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
+using MVCWebAppKenney.Models;
+using MVCWebAppKenney.Models.FarmModel;
 
 namespace MVCWebAppKenney.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IFarmRepo _farmRepo;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IFarmRepo farmRepo)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _farmRepo = farmRepo;
         }
 
         [BindProperty]
@@ -45,6 +51,24 @@ namespace MVCWebAppKenney.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
+            [Display(Name = "FirstName")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [Display(Name = "LastName")]
+            public string LastName { get; set; }
+
+            [Required]
+            [Display(Name = "Phone")]
+            public string Phone { get; set; }
+
+            [Display(Name = "UserRole")]
+            public string UserRole { get; set; }
+
+            [Display(Name = "Farm")]
+            public int FarmID { get; set; }
+
+            [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
@@ -58,6 +82,7 @@ namespace MVCWebAppKenney.Areas.Identity.Pages.Account
 
         public void OnGet(string returnUrl = null)
         {
+            ViewData["Farms"] = new SelectList(_farmRepo.ListAllFarms(), "FarmID", "FarmName");
             ReturnUrl = returnUrl;
         }
 
@@ -66,7 +91,17 @@ namespace MVCWebAppKenney.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                if (Input.UserRole == "Analyst")
+                {
+                    // Create new analyst and add role
+                }
+
+                if (Input.UserRole == "Farmer")
+                {
+                    // Create a new farmer and add role
+                }
+
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -82,7 +117,7 @@ namespace MVCWebAppKenney.Areas.Identity.Pages.Account
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    //await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)
