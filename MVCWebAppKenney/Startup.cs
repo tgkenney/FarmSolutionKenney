@@ -20,6 +20,8 @@ using MVCWebAppKenney.Models.FarmModel;
 using MVCWebAppKenney.Models.ApplicationUserModel;
 using MVCWebAppKenney.Models.ForecastModel;
 using MVCWebAppKenney.Models.Analyst;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using MVCWebAppKenney.Services;
 
 namespace MVCWebAppKenney
 {
@@ -45,14 +47,45 @@ namespace MVCWebAppKenney
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<ApplicationUser>()
+            services.AddDefaultIdentity<ApplicationUser>
+                (
+                    options =>
+                    {
+                        options.Password.RequiredLength = 6;
+                        options.Password.RequireNonAlphanumeric = false;
+                        options.Password.RequireUppercase = true;
+                        options.Password.RequireLowercase = true;
+                        options.Password.RequireDigit = true;
+
+                        options.User.RequireUniqueEmail = true;
+                    }
+                )
                 .AddRoles<IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<ApplicationDbContext>(); // Changed IdentityUser to ApplicationUser, and added AddRoles
+                .AddEntityFrameworkStores<ApplicationDbContext>(); ; // Changed IdentityUser to ApplicationUser, and added AddRoles
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            //2. Need to add
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddRazorPagesOptions(options =>
+                {
+                    options.AllowAreas = true;
+                    options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
+                    options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
+                });
+
+            //3. Need to add
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = $"/Identity/Account/Login";
+                options.LogoutPath = $"/Identity/Account/Logout";
+                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+            });
+
+
 
             // Connecting link for interfaces
+            services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<ICropRepo, CropRepo>();
             services.AddTransient<IFarmRepo, FarmRepo>();
             services.AddTransient<ICropYieldRepo, CropYieldRepo>();
