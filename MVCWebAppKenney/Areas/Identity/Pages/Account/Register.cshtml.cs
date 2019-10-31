@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using MVCWebAppKenney.Models;
+using MVCWebAppKenney.Models.Analyst;
 using MVCWebAppKenney.Models.FarmModel;
 
 namespace MVCWebAppKenney.Areas.Identity.Pages.Account
@@ -63,7 +64,7 @@ namespace MVCWebAppKenney.Areas.Identity.Pages.Account
             public string Phone { get; set; }
 
             [Display(Name = "UserRole")]
-            public string UserRole { get; set; }
+            public List<string> UserRole { get; set; }
 
             [Display(Name = "Farm")]
             public int FarmID { get; set; }
@@ -91,21 +92,38 @@ namespace MVCWebAppKenney.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                if (Input.UserRole == "Analyst")
+                ApplicationUser user = new ApplicationUser();
+
+                if (Input.UserRole.Contains("Analyst"))
                 {
                     // Create new analyst and add role
+                    user = new Analyst(Input.FirstName, Input.LastName, Input.Email, Input.Phone, Input.Password);
                 }
 
-                if (Input.UserRole == "Farmer")
+                else if (Input.UserRole.Contains("Farmer"))
                 {
                     // Create a new farmer and add role
+                    user = new Farmer(Input.FirstName, Input.LastName, Input.Email, Input.Phone, Input.Password, Input.FarmID);
+                }
+                
+                else
+                {
+                    // If no role is specified
+                    user = new ApplicationUser(Input.FirstName, Input.LastName, Input.Email, Input.Phone, Input.Password);
                 }
 
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                //var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    foreach (string eachRole in Input.UserRole)
+                    {
+                        if (eachRole != "None")
+                            await _userManager.AddToRoleAsync(user, eachRole);
+                    }
+
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Page(
