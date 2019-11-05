@@ -66,17 +66,5 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="~/lib/jquery/dist/jquery.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        $(document).ready(function (e) {
-            $('FarmGroup').hide();
-            $('RoleGroup').change(function () {
-                if ($(this).val() == 'Farmer') {
-                    $('FarmGroup').show();
-                }
-                else {
-                    $('FarmGroup').hide();
-                }
-            });
-        });
-    </script>
+    <script type="text/javascript" src="~/js/RegisterUserRole.js"></script>
 }
