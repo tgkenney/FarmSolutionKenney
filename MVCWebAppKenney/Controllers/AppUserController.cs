@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MVCWebAppKenney.Data;
 using MVCWebAppKenney.Models;
 
@@ -29,6 +30,23 @@ namespace MVCWebAppKenney.Controllers
             string jsonData = null;
 
             var userRoleList =
+                from UR in database.UserRoles
+                join R in database.Roles
+                on UR.RoleId equals R.Id
+                where UR.UserId == id
+                select new { R.Id, R.Name };
+                 // LINQ for SQL
+
+            jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(userRoleList);
+
+            return jsonData;
+        }
+
+        public string GetAvailableRoles(string id)
+        {
+            string jsonData = null;
+
+            var userRoleList =
                 from R in database.Roles
                 where !
                 (
@@ -42,6 +60,14 @@ namespace MVCWebAppKenney.Controllers
             jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(userRoleList);
 
             return jsonData;
+        }
+
+        [HttpGet]
+        public IActionResult AssignAppUserRoles()
+        {
+            ViewData["AppUsers"] = new SelectList(database.ApplicationUsers.OrderBy(a => a.LastName).ToList<ApplicationUser>());
+
+            return View();
         }
     }
 }
