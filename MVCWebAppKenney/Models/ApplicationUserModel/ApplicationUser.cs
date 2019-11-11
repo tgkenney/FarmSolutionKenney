@@ -12,7 +12,13 @@ namespace MVCWebAppKenney.Models
         public string LastName { get; set; }
         public string FullName
         {
-            get { return LastName + ", " + FirstName; }
+            get
+            {
+                if (FirstName != null && LastName != null)
+                    return LastName + ", " + FirstName;
+                else
+                    return UserName;
+            }
         }
 
         public ApplicationUser(string firstname, string lastname, string email, string phoneNumber, string password)

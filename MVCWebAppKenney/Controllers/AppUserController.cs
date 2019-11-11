@@ -65,7 +65,7 @@ namespace MVCWebAppKenney.Controllers
         [HttpGet]
         public IActionResult AssignAppUserRoles()
         {
-            ViewData["AppUsers"] = new SelectList(database.ApplicationUsers.OrderBy(a => a.LastName).ToList<ApplicationUser>());
+            ViewData["AppUsers"] = new SelectList(database.ApplicationUsers.OrderBy(a => a.LastName).ToList<ApplicationUser>(), "Id", "FullName");
 
             return View();
         }
