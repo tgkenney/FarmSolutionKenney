@@ -15,7 +15,7 @@ function DisplayCheckBoxList() {
             success: function (data) {
                 $listCurrentRoles.empty();
                 $.each(data, function () {
-                    $listCurrentRoles.append('<input type="checkbox" name="rolesTarget" value=" ' + this.Name + ' "> ' + this.Name + ' <br>');
+                    $listCurrentRoles.append('<input type="checkbox" name="userRoles" value=" ' + this.Name + ' "> ' + this.Name + ' <br>');
                 });
             },
             error: function () {
@@ -33,7 +33,7 @@ function DisplayCheckBoxList() {
             success: function (data) {
                 $listAvailableRoles.empty();
                 $.each(data, function () {
-                    $listAvailableRoles.append('<input type="checkbox" name="availableRolesTarget" value=" ' + this.Name + ' "> ' + this.Name + ' <br>');
+                    $listAvailableRoles.append('<input type="checkbox" name="availableRoles" value=" ' + this.Name + ' "> ' + this.Name + ' <br>');
                 });
             },
             error: function () {
@@ -53,7 +53,14 @@ function GetListBoxData(targetType, inputURL, checkboxName) {
             success: function (data) {
                 listRoles.empty();
                 $.each(data, function () {
-                    listRoles.append('<input type="checkbox" name="' + checkboxName + '" value=" ' + this.Name + ' "> ' + this.Name + ' <br>');
+                    var appendString = '<input type="checkbox" name=" ';
+                    appendString.append(checkboxName);
+                    appendString.append('" value=" ');
+                    appendString.append(this.Name);
+                    appendString.append(' "> ');
+                    appendString.append(this.Name)
+                    appendString.append(' <br>');
+                    listRoles.append(appendString);
                 });
             },
             error: function () {

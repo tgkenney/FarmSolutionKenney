@@ -24,6 +24,11 @@ namespace MVCWebAppKenney.Controllers
             this.roleManager = roleManager;
         }
 
+        public void PopulateDropdowns()
+        {
+            ViewData["AppUsers"] = new SelectList(database.ApplicationUsers.OrderBy(a => a.LastName).ToList<ApplicationUser>(), "Id", "FullName");
+        }
+
         // JavaScript Object Notation (JSON)
         public string GetCurrentRoles(string id)
         {
@@ -65,7 +70,33 @@ namespace MVCWebAppKenney.Controllers
         [HttpGet]
         public IActionResult AssignAppUserRoles()
         {
-            ViewData["AppUsers"] = new SelectList(database.ApplicationUsers.OrderBy(a => a.LastName).ToList<ApplicationUser>(), "Id", "FullName");
+            PopulateDropdowns();
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AssignAppuserRoles(string submitButton)
+        {
+            string userID = Request.Form["ddlAppUsers"].ToString();
+            ApplicationUser user = database.ApplicationUsers.Find(userID);
+
+            List<string> selectedRoles = new List<string>();
+
+            if (submitButton == "AddRoles")
+            {
+                selectedRoles = Request.Form["availableRoles"].ToList<string>();
+                selectedRoles = selectedRoles.ConvertAll(s => s.Trim());
+
+                await userManager.AddToRolesAsync(user, selectedRoles);
+            }
+            else if (submitButton == "RemoveRoles")
+            {
+                selectedRoles = Request.Form["userRoles"].ToList<string>();
+                selectedRoles = selectedRoles.ConvertAll(s => s.Trim());
+
+                await userManager.RemoveFromRolesAsync(user, selectedRoles);
+            }
 
             return View();
         }

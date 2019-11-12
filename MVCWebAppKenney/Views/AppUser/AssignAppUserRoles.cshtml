@@ -1,12 +1,12 @@
 ﻿
 @{
-    ViewData["Title"] = "AssignAppUserRoles";
+    ViewData["Title"] = "Assign Roles";
 }
 
 <h1>@ViewData["Title"]</h1>
 <form asp-action="AssignAppUserRoles" method="post">
     <div class="form-group">
-        <label> App Users </label>
+        <label> Users </label>
         <select name="ddlAppUsers" asp-items="ViewBag.AppUsers" class="form-control" id="usersTarget">
             <option value="None"> None </option>
         </select>
