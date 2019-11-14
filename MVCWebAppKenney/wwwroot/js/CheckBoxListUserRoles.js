@@ -1,65 +1,45 @@
 ﻿$(document).ready(function () {
+    DisplayRoles();
     $("#usersTarget").on("change", function () {
-        DisplayCheckBoxList();
+        DisplayRoles();
     });
 });
 
-function DisplayCheckBoxList() {
-    $listCurrentRoles = $("#rolesTarget");
-    $.ajax(
-        {
-            url: "GetCurrentRoles",
-            type: "GET",
-            dataType: "json",
-            data: { id: $("#usersTarget").val() },
-            success: function (data) {
-                $listCurrentRoles.empty();
-                $.each(data, function () {
-                    $listCurrentRoles.append('<input type="checkbox" name="userRoles" value=" ' + this.Name + ' "> ' + this.Name + ' <br>');
-                });
-            },
-            error: function () {
-                alert("Data not received");
-            }
-        });
+function DisplayRoles() {
+    var inputUrl = "GetCurrentRoles";
+    var checkBoxName = "currentRoles";
+    var rolesTarget = "#currentRolesTarget";
+    GetRolesForUser(inputUrl, checkBoxName, rolesTarget);
 
-    $listAvailableRoles = $("#availableRolesTarget");
-    $.ajax(
-        {
-            url: "GetAvailableRoles",
-            type: "GET",
-            dataType: "json",
-            data: { id: $("#usersTarget").val() },
-            success: function (data) {
-                $listAvailableRoles.empty();
-                $.each(data, function () {
-                    $listAvailableRoles.append('<input type="checkbox" name="availableRoles" value=" ' + this.Name + ' "> ' + this.Name + ' <br>');
-                });
-            },
-            error: function () {
-                alert("Data not received");
-            }
-        });
+    inputUrl = "GetAvailableRoles";
+    checkBoxName = "availableRoles";
+    rolesTarget = "#availableRolesTarget";
+    GetRolesForUser(inputUrl, checkBoxName, rolesTarget);
 }
 
-function GetListBoxData(targetType, inputURL, checkboxName) {
-    var listRoles = $(targetType);
+function GetRolesForUser(dataUrl, checkBoxName, rolesTarget) {
+    var listRoles = $(rolesTarget);
+    var usersTarget = $("#usersTarget").val();
+    var appendString;
     $.ajax(
         {
-            url: inputURL,
+            url: dataUrl,
             type: "GET",
             dataType: "json",
-            data: { id: $("#usersTarget").val() },
+            data: { id: usersTarget },
             success: function (data) {
                 listRoles.empty();
                 $.each(data, function () {
-                    var appendString = '<input type="checkbox" name=" ';
-                    appendString.append(checkboxName);
-                    appendString.append('" value=" ');
-                    appendString.append(this.Name);
-                    appendString.append(' "> ');
-                    appendString.append(this.Name)
-                    appendString.append(' <br>');
+                    appendString = '<input type="checkbox" ';
+                    appendString += ' name = "';
+                    appendString += checkBoxName;
+                    appendString += '" ';
+                    appendString += ' value = "';
+                    appendString += this.Name;
+                    appendString += '" >';
+                    appendString += this.Name;
+                    appendString += '<br/>';
+                    //alert(appendString);
                     listRoles.append(appendString);
                 });
             },

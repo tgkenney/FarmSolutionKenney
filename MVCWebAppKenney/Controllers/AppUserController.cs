@@ -32,8 +32,6 @@ namespace MVCWebAppKenney.Controllers
         // JavaScript Object Notation (JSON)
         public string GetCurrentRoles(string id)
         {
-            string jsonData = null;
-
             var userRoleList =
                 from UR in database.UserRoles
                 join R in database.Roles
@@ -42,15 +40,13 @@ namespace MVCWebAppKenney.Controllers
                 select new { R.Id, R.Name };
                  // LINQ for SQL
 
-            jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(userRoleList);
+            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(userRoleList);
 
             return jsonData;
         }
 
         public string GetAvailableRoles(string id)
         {
-            string jsonData = null;
-
             var userRoleList =
                 from R in database.Roles
                 where !
@@ -62,7 +58,7 @@ namespace MVCWebAppKenney.Controllers
                 .Contains(R.Id)
                 select new { R.Id, R.Name }; // LINQ for SQL
 
-            jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(userRoleList);
+            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(userRoleList);
 
             return jsonData;
         }
@@ -92,11 +88,13 @@ namespace MVCWebAppKenney.Controllers
             }
             else if (submitButton == "RemoveRoles")
             {
-                selectedRoles = Request.Form["userRoles"].ToList<string>();
+                selectedRoles = Request.Form["currentRoles"].ToList<string>();
                 selectedRoles = selectedRoles.ConvertAll(s => s.Trim());
 
                 await userManager.RemoveFromRolesAsync(user, selectedRoles);
             }
+
+            ViewData["AppUsers"] = new SelectList(database.ApplicationUsers.OrderBy(a => a.LastName).ToList<ApplicationUser>(), "Id", "FullName", userID);
 
             return View();
         }
