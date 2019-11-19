@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using MVCWebAppKenney.Data;
 using MVCWebAppKenney.Models;
 using MVCWebAppKenney.ViewModels;
+using Newtonsoft.Json;
 
 namespace MVCWebAppKenney.Controllers
 {
@@ -22,7 +23,27 @@ namespace MVCWebAppKenney.Controllers
         // Dependency Injection
         public ForecastsController(ApplicationDbContext dbContext)
         {
-            database = dbContext;
+            this.database = dbContext;
+        }
+
+        public IActionResult GetForecastVSales()
+        {
+            return View();
+        }
+
+        public string GetForecastVSalesDataForChart()
+        {
+            var data = database.Forecasts
+                .Include(f => f.Crop)
+                .GroupBy(f => f.Crop.CropName)
+                .Select(gvm => new ForecastVSalesGroupingViewModel
+                {
+                    CropName = gvm.First().Crop.CropName,
+                    TotalDemandForecast = gvm.Sum(i => i.ForecastAmount),
+                    TotalActualSales = gvm.Sum(i => i.ActualSales)
+                });
+
+            return JsonConvert.SerializeObject(data);
         }
 
         [HttpGet]
