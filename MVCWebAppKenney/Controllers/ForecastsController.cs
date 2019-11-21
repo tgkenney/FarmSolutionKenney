@@ -9,7 +9,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MVCWebAppKenney.Data;
 using MVCWebAppKenney.Models;
+using MVCWebAppKenney.Models.ForecastModel;
 using MVCWebAppKenney.ViewModels;
+using Newtonsoft.Json;
 
 namespace MVCWebAppKenney.Controllers
 {
@@ -17,12 +19,65 @@ namespace MVCWebAppKenney.Controllers
     public class ForecastsController : Controller
     {
         private ApplicationDbContext database;
+        private readonly IForecastRepo forecastRepoInterface;
 
         // Constructor
         // Dependency Injection
-        public ForecastsController(ApplicationDbContext dbContext)
+        public ForecastsController(ApplicationDbContext dbContext, IForecastRepo forecastRepo)
         {
-            database = dbContext;
+            this.database = dbContext;
+            this.forecastRepoInterface = forecastRepo;
+        }
+
+        public IActionResult GetForecastVSales()
+        {
+            return View();
+        }
+
+        public string GetForecastVSalesDataForChart()
+        {
+            var data = database.Forecasts
+                .Include(f => f.Crop)
+                .GroupBy(f => f.Crop.CropName)
+                .Select(gvm => new ForecastVSalesGroupingViewModel
+                {
+                    CropName = gvm.First().Crop.CropName,
+                    TotalDemandForecast = gvm.Sum(i => i.ForecastAmount),
+                    TotalActualSales = gvm.Sum(i => i.ActualSales)
+                });
+
+            return JsonConvert.SerializeObject(data);
+        }
+
+        public IActionResult GetForecastsWithoutActualSales()
+        {
+            List<Forecast> forecastList = new List<Forecast>();
+
+            forecastList = database.Forecasts
+                .Include(f => f.Crop)
+                .ThenInclude(c => c.Classification)
+                .Where(f => f.ActualSales == null)
+                .ToList();
+
+            return View(forecastList);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateMultipleForecasts()
+        {
+            var actualSalesList = Request.Form["actualSales"].ToList();
+            var forecastIdList = Request.Form["forecastID"].ToList();
+
+            for (int i = 0; i < actualSalesList.Count; i++)
+            {
+                Forecast forecast = database.Forecasts.Find(int.Parse(forecastIdList[i]));
+                forecast.ActualSales = double.Parse(actualSalesList[i]);
+
+                database.Forecasts.Update(forecast);
+                database.SaveChanges();
+            }
+
+            return RedirectToAction("SearchDemandForecasts");
         }
 
         [HttpGet]
