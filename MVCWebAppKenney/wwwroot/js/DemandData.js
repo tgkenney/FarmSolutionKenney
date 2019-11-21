@@ -1,4 +1,4 @@
-﻿$(document).ready(function() {
+﻿$(document).ready(function () {
     $.ajax(
         {
             url: "GetForecastVSalesDataForChart",
@@ -19,12 +19,12 @@ function CreateChart(inputData) {
         {
             element: 'chart',
             data: inputData,
-            xKey: ['CropName'],
-            yKeys: ['TotalDemandForecast', 'TotalActualSales'],
+            xkey: ['CropName'],
+            ykeys: ['TotalDemandForecast', 'TotalActualSales'],
             labels: ['TotalDemandForecast', 'TotalActualSales'],
-            hideHover: 'auto',
-            resize: true,
-            parseTime: false
+            hideHover: 'auto', //hides data unless hovering over
+            resize: true, // resize to data size
+            parseTime: false //all above are required for chart
         }
     );
 }

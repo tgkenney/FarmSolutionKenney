@@ -9,5 +9,8 @@ namespace MVCWebAppKenney.Models.ForecastModel
     {
         // List for searching
         IQueryable<Forecast> ForecastList { get; }
+        List<Forecast> GetForecastsWithoutActualSales();
+        Forecast FindDemandForecast(int forecastId);
+        Task EditForecast(Forecast forecast);
     }
 }
