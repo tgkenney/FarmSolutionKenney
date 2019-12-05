@@ -44,6 +44,8 @@ namespace MVCWebAppKenney
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddSession();
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -109,6 +111,7 @@ namespace MVCWebAppKenney
                 app.UseHsts();
             }
 
+            app.UseSession();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

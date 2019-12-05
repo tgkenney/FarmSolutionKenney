@@ -49,11 +49,15 @@ namespace MVCWebAppKenney.Controllers
 
         public IActionResult ForecastsByAnalystForCrop(int cropID)
         {
-            var analystID = HttpContext.Session.Get("AnalystID");
+            var analystID = HttpContext.Session.GetString("AnalystID");
 
-            var forecastList = database.Forecasts.ToList();
+            var forecastList = database.Forecasts
+                .Include(f => f.Analyst)
+                .Include(f => f.Crop)
+                .Where(f => f.CropID == cropID && f.Id == analystID)
+                .ToList();
 
-            return View();
+            return View(forecastList);
         }
     }
 }

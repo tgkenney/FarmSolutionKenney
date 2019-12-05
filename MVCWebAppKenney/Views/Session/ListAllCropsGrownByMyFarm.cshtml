@@ -1,0 +1,29 @@
+﻿@model IEnumerable<CanProduce>
+
+@{
+    ViewData["Title"] = "ListAllCropsGrownByMyFarm";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Crop Name</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (CanProduce eacCanProduce in Model)
+        {
+            <tr>
+                <td>@eacCanProduce.Crop.CropName</td>
+                <td>
+                    <a class="btn btn-info" asp-controller="Session" asp-action="ForecastsByAnalystForCrop" asp-route-cropID="@eacCanProduce.CropID">Select Crop</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table> 
