@@ -49,14 +49,6 @@
                                 </div>
                             </div>
                             <div class="dropdown">
-                                <button class="dropbtn"> Can Produce </button>
-                                <div class="dropdown-content">
-                                    <a asp-area="" asp-controller="CanProduce" asp-action="ListAllCanProduce"> All can produce </a>
-                                    <a asp-area="" asp-controller="CanProduce" asp-action="ListAllCropsAndFarms"> All crops with farms </a>
-                                    <a asp-area="" asp-controller="CanProduce" asp-action="ListAllFarmsAndCrops"> All farms with crops </a>
-                                </div>
-                            </div>
-                            <div class="dropdown">
                                 <button class="dropbtn"> Classifications </button>
                                 <div class="dropdown-content">
                                     <a asp-area="" asp-controller="Classifications" asp-action="ListAllClassificationCrops"> All classifications with crops </a>
@@ -74,6 +66,8 @@
                                 <button class="dropbtn"> Farms </button>
                                 <div class="dropdown-content">
                                     <a asp-area="" asp-controller="Farms" asp-action="ListAllFarms"> All farms </a>
+                                    <a asp-area="" asp-controller="CanProduce" asp-action="ListAllFarmsAndCrops"> All farms with crops </a>
+                                    <a asp-area="" asp-controller="CanProduce" asp-action="ListAllCropsAndFarms"> All crops with farms </a>
                                 </div>
                             </div>
                             <div class="dropdown">
