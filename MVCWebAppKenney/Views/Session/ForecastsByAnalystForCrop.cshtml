@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Forecast>
+
+@{
+    ViewData["Title"] = "Forecasts by Analyst for Crop";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th>Crop Name</th>
+        <th>Classification Name</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Demand Forecast</th>
+        <th>Actual Sales</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (Forecast eachForecast in Model)
+    {
+        <tr>
+            <td>@eachForecast.Crop.CropName</td>
+            <td>@eachForecast.StartDate.ToShortDateString()</td>
+            <td>@eachForecast.EndDate.ToShortDateString()</td>
+            <td>@eachForecast.ForecastAmount</td>
+            <td>@eachForecast.ActualSales</td>
+        </tr>
+    }
+    </tbody>
+</table>

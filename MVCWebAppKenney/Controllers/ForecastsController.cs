@@ -53,11 +53,7 @@ namespace MVCWebAppKenney.Controllers
         {
             List<Forecast> forecastList = new List<Forecast>();
 
-            forecastList = database.Forecasts
-                .Include(f => f.Crop)
-                .ThenInclude(c => c.Classification)
-                .Where(f => f.ActualSales == null)
-                .ToList();
+            forecastList = forecastRepoInterface.GetForecastsWithoutActualSales();
 
             return View(forecastList);
         }

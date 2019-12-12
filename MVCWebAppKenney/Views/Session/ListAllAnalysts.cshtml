@@ -1,0 +1,32 @@
+﻿@using MVCWebAppKenney.Models.Analyst
+@model IEnumerable<MVCWebAppKenney.Models.Analyst.Analyst>
+
+@{
+    ViewData["Title"] = "List All Analysts";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h3>List All Analysts</h3>
+
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th>Analyst Name</th>
+        <th></th>
+    </tr>
+    </thead>
+
+    <tbody>
+        
+    @foreach (Analyst eachAnalyst in Model)
+    {
+        <tr>
+            <td>@eachAnalyst.FullName</td>
+            <td>
+                <a class="btn btn-info" asp-controller="Session" asp-action="ListAllCropsGrownByMyFarm" asp-route-analystID="@eachAnalyst.Id">Select Analyst</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table> 

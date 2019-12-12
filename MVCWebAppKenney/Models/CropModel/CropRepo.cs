@@ -22,7 +22,7 @@ namespace MVCWebAppKenney.Models.CropModel
 
         public List<Crop> ListAllCrops()
         {
-            List<Crop> cropList = database.Crops.Include(c => c.Classification).ToList<Crop>();
+            List<Crop> cropList = database.Crops.Include(c => c.Classification).OrderBy(c => c.CropName).ToList<Crop>();
 
             return cropList;
         }

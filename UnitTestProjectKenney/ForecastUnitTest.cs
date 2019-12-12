@@ -22,6 +22,7 @@ namespace UnitTestProjectKenney
         private Mock<ICropRepo> mockCropRepo;
         private Mock<IAnalystRepo> mockAnalystRepo;
         private AnalystController analystController;
+        private ForecastsController forecastsController;
 
         public ForecastUnitTest()
         {
@@ -30,6 +31,7 @@ namespace UnitTestProjectKenney
             mockUserRepo = new Mock<IApplicationUserRepo>();
             mockAnalystRepo = new Mock<IAnalystRepo>();
             analystController = new AnalystController(mockUserRepo.Object, mockForecastRepo.Object, mockCropRepo.Object, mockAnalystRepo.Object);
+            
         }
 
         [Fact]
@@ -86,6 +88,21 @@ namespace UnitTestProjectKenney
             Assert.Equal(10, result.ForecastList.Count);
             Assert.Equal(expectedSearchResult, model.ForecastList);
         }
+
+        // Build Unit Test for Forecasts without Actual sales
+        [Fact]
+        public void ShouldListForecastsWithoutActual()
+        {
+            // 1. Arrange
+            IQueryable<Forecast> mockForecastList = PopulateForecasts();
+            mockForecastRepo.Setup(m => m.ForecastList).Returns(mockForecastList);
+
+            // 2. Act
+            
+
+            // 3. Assert
+        }
+
 
         public IQueryable<Forecast> PopulateForecasts()
         {
@@ -184,7 +201,7 @@ namespace UnitTestProjectKenney
                 StartDate = new DateTime(2019, 2, 17),
                 EndDate = new DateTime(2019, 2, 23),
                 ForecastAmount = 85,
-                ActualSales = 80,
+                ActualSales = null,
                 CropID = 1,
                 Id = "2"
             };
@@ -195,7 +212,7 @@ namespace UnitTestProjectKenney
                 StartDate = new DateTime(2019, 2, 17),
                 EndDate = new DateTime(2019, 2, 23),
                 ForecastAmount = 85,
-                ActualSales = 80,
+                ActualSales = null,
                 CropID = 1,
                 Id = "2"
             };
@@ -206,7 +223,7 @@ namespace UnitTestProjectKenney
                 StartDate = new DateTime(2019, 2, 17),
                 EndDate = new DateTime(2019, 2, 23),
                 ForecastAmount = 85,
-                ActualSales = 80,
+                ActualSales = null,
                 CropID = 2,
                 Id = "2"
             };

@@ -34,21 +34,57 @@
                         </li>
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Classifications" asp-action="ListAllClassificationCrops">Crops</a>
-                            </li>
-                            //if (User.IsInRole("Analyst"))
-                            //{
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Analyst" asp-action="SearchForecasts">Search Forecasts</a>
-                            </li>
-                            //}
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="CanProduce" asp-action="ListAllFarmsAndCrops">Farms with Crops</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Crops" asp-action="SearchCropYields">Crop yields</a>
-                            </li>
+                            <div class="dropdown">
+                                <button class="dropbtn"> Analyst </button>
+                                <div class="dropdown-content">
+                                    <a asp-area="" asp-controller="Analyst" asp-action="SearchForecasts"> Search forecasts </a>
+                                </div>
+                            </div>
+                            <div class="dropdown">
+                                <button class="dropbtn"> User </button>
+                                <div class="dropdown-content">
+                                    <a asp-area="" asp-controller="AppUser" asp-action="AssignAppuserRoles"> Assign user roles </a>
+                                    <a asp-area="" asp-controller="AppUser" asp-action="GetAvailableRoles"> Get available roles (API) </a>
+                                    <a asp-area="" asp-controller="AppUser" asp-action="GetCurrentRoles"> Get current roles (API) </a>
+                                </div>
+                            </div>
+                            <div class="dropdown">
+                                <button class="dropbtn"> Classifications </button>
+                                <div class="dropdown-content">
+                                    <a asp-area="" asp-controller="Classifications" asp-action="ListAllClassificationCrops"> All classifications with crops </a>
+                                </div>
+                            </div>
+                            <div class="dropdown">
+                                <button class="dropbtn"> Crops </button>
+                                <div class="dropdown-content">
+                                    <a asp-area="" asp-controller="Crops" asp-action="SearchCrops"> Search crops </a>
+                                    <a asp-area="" asp-controller="Crops" asp-action="SearchCropYields"> Search crop yields </a>
+                                    <a asp-area="" asp-controller="Crops" asp-action="AddCropYield"> Add crop yield </a>
+                                </div>
+                            </div>
+                            <div class="dropdown">
+                                <button class="dropbtn"> Farms </button>
+                                <div class="dropdown-content">
+                                    <a asp-area="" asp-controller="Farms" asp-action="ListAllFarms"> All farms </a>
+                                    <a asp-area="" asp-controller="CanProduce" asp-action="ListAllFarmsAndCrops"> All farms with crops </a>
+                                    <a asp-area="" asp-controller="CanProduce" asp-action="ListAllCropsAndFarms"> All crops with farms </a>
+                                </div>
+                            </div>
+                            <div class="dropdown">
+                                <button class="dropbtn"> Forecasts </button>
+                                <div class="dropdown-content">
+                                    <a asp-area="" asp-controller="Forecasts" asp-action="GetForecastVSales"> Forecasts VS Sales </a>
+                                    <a asp-area="" asp-controller="Forecasts" asp-action="GetForecastsWithoutActualSales"> Forecasts without sales </a>
+                                    <a asp-area="" asp-controller="Forecasts" asp-action="SearchDemandForecasts"> Search forecasts </a>
+                                    <a asp-area="" asp-controller="Forecasts" asp-action="AddDemandForecast"> Add forecast </a>
+                                </div>
+                            </div>
+                            <div class="dropdown">
+                                <button class="dropbtn"> Session </button>
+                                <div class="dropdown-content">
+                                    <a asp-area="" asp-controller="Session" asp-action="ListAllAnalysts"> All analysts </a>
+                                </div>
+                            </div>
                         }
                     </ul>
                 </div>
