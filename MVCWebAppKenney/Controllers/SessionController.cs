@@ -39,6 +39,8 @@ namespace MVCWebAppKenney.Controllers
             var userID = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var farmID = farmRepo.FindFarmOfFarmer(userID);
 
+            ViewData["FarmName"] = database.Farms.Find(farmID).FarmName;
+
             var canProduceList = database.CanProduce
                 .Include(cp => cp.Crop)
                 .Where(cp => cp.FarmID == farmID)
